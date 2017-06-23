@@ -1,10 +1,16 @@
 package elasticsearch;
 
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.get.GetField;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.search.SearchHit;
+import org.junit.Before;
+import org.junit.Test;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,27 +19,94 @@ import java.util.Map;
  */
 public class EsClientTest {
 
-    public static void main(String[] args) {
-        //EsClient.createIndex("website");
-        try {
-            //EsClient.addType();
-            //IndexResponse indexResponse = EsClient.createData();
-            //System.out.println(indexResponse.getIndex() + "-" + indexResponse.getType() + ":" + indexResponse.getId());
-            GetResponse response = EsClient.get("AVywjOZwjA4CE3gKEJ0v");
-            System.out.println(response.getSourceAsString());
-            for (Map.Entry<String, GetField> entry : response.getFields().entrySet()) {
-                System.out.println(entry.getKey() + ":" + entry.getValue().getValue());
-            }
+    private DataParam dataParam;
 
-            SearchResponse searchResponse = EsClient.search("内");
+    @Before
+    public void before() {
+        System.out.println("initial data param");
+        dataParam = new DataParam();
+        dataParam.setIndex("website");
+        dataParam.setType("blog");
+    }
+
+    @Test
+    public void testInsertData() {
+        Map<String, Object> dataMap = new HashMap<>(3);
+        dataMap.put("id", 11);
+        dataMap.put("title", "测试分词");
+        dataMap.put("content", "发展中国家");
+
+        dataParam.setDataMap(dataMap);
+        dataParam.setDocId("11");
+        try {
+            IndexResponse indexResponse = EsClient.insertData(dataParam);
+            if (indexResponse.isCreated()) {
+                System.out.println("id=" + indexResponse.getId());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testGetDocById() {
+        dataParam.setDocId("11");
+        GetResponse response = EsClient.get(dataParam);
+        System.out.println(response.getSourceAsString());
+    }
+
+    @Test
+    public void testSearch() {
+        try {
+            dataParam.setSearchWord("中国");
+            SearchResponse searchResponse = EsClient.search(dataParam);
             for (SearchHit hit : searchResponse.getHits()) {
-                String id = hit.getId();
-                String title = hit.getFields().get("title").getValue();
-                String content = hit.getFields().get("content").getValue();
-                System.out.println("id:" + id + ", title:" + title + ", content:" + content);
+                String id = String.valueOf(hit.getSource().get("id"));
+                String title = String.valueOf(hit.getSource().get("title"));
+                String content = String.valueOf(hit.getSource().get("content"));
+                String score = String.valueOf(hit.getScore());
+                System.out.println("id:" + id + ",title:" + title + ",content:" + content + ",score:" + score);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testPageSearch() {
+        SearchResponse searchResponse = EsClient.pageSearch();
+        Long hitsCount = searchResponse.getHits().totalHits();
+        System.out.println("totalHits:" + hitsCount);
+        for (SearchHit hit : searchResponse.getHits()) {
+            System.out.println("docId:" + hit.getId());
+            System.out.println("id:" + String.valueOf(hit.getSource().get("id"))
+                    + ",title:" + String.valueOf(hit.getSource().get("title"))
+                    + ",content:" + String.valueOf(hit.getSource().get("content")));
+        }
+    }
+
+    @Test
+    public void testUpdate() {
+        dataParam.setDocId("10");
+        GetResponse response = EsClient.get(dataParam);
+        if (response == null) {
+            System.out.println("response is null");
+            return;
+        }
+        Map<String, Object> map = response.getSourceAsMap();
+        map.put("title", String.valueOf(map.get("title")) + "~");
+
+        dataParam.setDataMap(map);
+        UpdateResponse updateResponse = EsClient.update(dataParam);
+        map = updateResponse.getGetResult().getSource();
+        System.out.println(map);
+    }
+
+    @Test
+    public void testDelete() {
+        dataParam.setDocId("AVywioMZjA4CE3gKEJ0p");
+        DeleteResponse response = EsClient.delete(dataParam);
+        System.out.println(response.getId());
+    }
+
 }

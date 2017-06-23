@@ -3,9 +3,12 @@ package elasticsearch;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.ClusterAdminClient;
 import org.elasticsearch.client.Requests;
@@ -29,7 +32,7 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 public class EsClient {
 
     private static final String HOST = "127.0.0.1";
-    public static Client client;
+    private static Client client;
     static {
         Settings settings = Settings.settingsBuilder()
                 .put("client.transport.sniff", true)
@@ -47,8 +50,10 @@ public class EsClient {
         }
     }
 
-    public static GetResponse get(String id) {
-        return client.prepareGet("website", "blog", id).get();
+    private EsClient() {}
+
+    public static GetResponse get(DataParam dataParam) {
+        return client.prepareGet(dataParam.getIndex(), dataParam.getType(), dataParam.getDocId()).get();
     }
 
     /**
@@ -77,7 +82,7 @@ public class EsClient {
      */
     public static void addType() throws IOException {
         // 定义索引字段属性,其实这里就是组合json,可以参考curl 方式创建索引的json格式  此处blog 和执行时blog必须一致
-        XContentBuilder builder= jsonBuilder()
+        XContentBuilder builder = jsonBuilder()
                 .startObject()
                 .startObject("blog")
                 .startObject("properties")
@@ -93,30 +98,58 @@ public class EsClient {
     }
 
     /**
-     * 创建数据
+     * 创建数据，手动指定id
      */
-    public static IndexResponse createData() throws IOException {
-        // 创建数据json 注意此ID是一个字段不是上面查询的id
-        XContentBuilder builder = jsonBuilder()
-                .startObject()
-                .field("id", "2")
-                .field("title", "我是标题")
-                .field("content", "我是内容")
-                .endObject();
-        return client.prepareIndex("website","blog").setSource(builder).execute().actionGet();
+    public static IndexResponse insertData(DataParam dataParam) throws IOException {
+        return client.prepareIndex(dataParam.getIndex(),dataParam.getType(), dataParam.getDocId())
+                .setSource(dataParam.getDataMap())
+                .execute()
+                .actionGet();
     }
 
     /**
      * 搜索
      */
-    public static SearchResponse search(String searchWord) {
-        return client.prepareSearch("website")
-                .setTypes("blog")
-                .setQuery(QueryBuilders.termQuery("content", searchWord))
-                .setFrom(0).setSize(10)
-                .setExplain(true)
-                .get();
+    public static SearchResponse search(DataParam dataParam) {
+        return client.prepareSearch(dataParam.getIndex())
+                .setTypes(dataParam.getType())
+                .setQuery(QueryBuilders.multiMatchQuery(dataParam.getSearchWord(), "title", "content"))
+                .setFrom(0).setSize(60).setExplain(true)
+                .execute()
+                .actionGet();
     }
 
+    /**
+     * 分页查询所有文档
+     */
+    public static SearchResponse pageSearch() {
+        return client.prepareSearch("website")
+                .setTypes("blog")
+                .setFrom(0)
+                .setSize(100)
+                .setExplain(true)
+                .execute().actionGet();
+    }
 
+    /**
+     * 更新
+     */
+    public static UpdateResponse update(DataParam dataParam) {
+        UpdateRequest updateRequest
+                = new UpdateRequest(dataParam.getIndex(), dataParam.getType(), dataParam.getDocId());
+        try {
+            updateRequest.doc(dataParam.getDataMap());
+            return client.update(updateRequest).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 删除
+     */
+    public static DeleteResponse delete(DataParam dataParam) {
+        return client.prepareDelete(dataParam.getIndex(), dataParam.getType(), dataParam.getDocId()).get();
+    }
 }

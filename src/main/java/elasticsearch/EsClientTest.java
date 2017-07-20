@@ -31,7 +31,7 @@ public class EsClientTest {
 
     @Test
     public void testInsertData() {
-        Map<String, Object> dataMap = new HashMap<>(3);
+        Map<String, Object> dataMap = new HashMap<String, Object>(3);
         dataMap.put("id", 11);
         dataMap.put("title", "测试分词");
         dataMap.put("content", "发展中国家");

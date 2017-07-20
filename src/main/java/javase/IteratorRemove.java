@@ -33,7 +33,7 @@ public class IteratorRemove {
      */
     @Test
     public void test2() {
-        List<Integer> numList = new ArrayList<>();
+        List<Integer> numList = new ArrayList<Integer>();
         for (int i = 0; i < 4; i++) {
             numList.add(i);
         }
@@ -49,7 +49,7 @@ public class IteratorRemove {
      */
     @Test
     public void test3() throws Exception {
-        List<Integer> numList = new ArrayList<>();
+        List<Integer> numList = new ArrayList<Integer>();
         for (int i = 0; i < 1000000; i++) {
             numList.add(i);
         }
@@ -69,7 +69,7 @@ public class IteratorRemove {
 
     @Test
     public void test4() throws Exception {
-        List<Integer> numList = new ArrayList<>();
+        List<Integer> numList = new ArrayList<Integer>();
         for (int i = 0; i < 1000000; i++) {
             numList.add(i);
         }

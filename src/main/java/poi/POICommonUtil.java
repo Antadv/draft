@@ -5,10 +5,6 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.streaming.SXSSFCell;
-import org.apache.poi.xssf.streaming.SXSSFRow;
-import org.apache.poi.xssf.streaming.SXSSFSheet;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -35,12 +31,6 @@ public class POICommonUtil {
         param.setInputStream(inputStream);
         param.setData(POIUtil.getData());
         Workbook workbook = initWorkbookWithVerticalStyle(param);
-
-        //String path = "D:/PartnerShipData.xlsx";
-        //InputStream inputStream = new FileInputStream(new File(path));
-        //param.setInputStream(inputStream);
-        //param.setData(POIUtil.getData());
-        //Workbook workbook = initSXSSFWorkbook(POIUtil.getData(), null, inputStream, 100, 1);
 
         POIUtil.saveFile(workbook, path);
         POIUtil.openFile(path);
@@ -117,55 +107,6 @@ public class POICommonUtil {
             }
         }
 
-        return workbook;
-    }
-
-    public static SXSSFWorkbook initSXSSFWorkbook(List<List<String>> data, List<String> titles, InputStream is, int maxRowCount, int offsetRow) throws IOException {
-        SXSSFWorkbook workbook;
-        SXSSFSheet sheet;
-        XSSFWorkbook xssfWorkbook;
-        if (is == null) {
-            workbook = new SXSSFWorkbook(maxRowCount);
-            sheet = workbook.createSheet();
-        } else {
-            xssfWorkbook = new XSSFWorkbook(is);
-            workbook = new SXSSFWorkbook(xssfWorkbook);
-            sheet = workbook.getSheetAt(0);
-        }
-        if (data == null || data.size() == 0)
-            return workbook;
-
-        int lastRowNum = sheet.getLastRowNum();
-        System.out.println("======" + lastRowNum);
-
-        CellStyle cellStyle = workbook.createCellStyle();
-        Font font = workbook.createFont();
-        font.setFontName("微软雅黑");
-        cellStyle.setFont(font);
-        cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        cellStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-        for (int i = 0; i < data.size(); i++) {
-            List<String> rowData = data.get(i);
-            SXSSFRow row = sheet.createRow(offsetRow + i);
-            if (i == 0 && (null != titles && titles.size() > 0)) {
-                for (int j = 0; j < titles.size(); j++) {
-                    //HSSFCell cell = createTitleCell(row, workbook, j, rowData.get(j));
-                    SXSSFCell cell = row.createCell(j);
-                    cell.setCellStyle(cellStyle);
-                    cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-                    cell.setCellValue(rowData.get(j));
-                }
-                continue;
-            }
-            for (int i1 = 0; i1 < rowData.size(); i1++) {
-                //HSSFCell cell = createTitleCell(row, workbook, i1, rowData.get(i1));
-                SXSSFCell cell = row.createCell(i1);
-                cell.setCellStyle(cellStyle);
-                cellStyle.setWrapText(true);
-                cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-                cell.setCellValue(new XSSFRichTextString(rowData.get(i1)));
-            }
-        }
         return workbook;
     }
 }

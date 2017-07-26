@@ -20,3 +20,24 @@ public class MinorGC {
         allocation4 = new byte[4 * _1MB];
     }
 }
+
+/**
+ * 公司某个项目tomcat jvm 设置
+ *
+ * -server
+ * -Xms2048m -Xmx2048m
+ * -Xmn768m
+ * -Xss256k 虚拟机栈大小
+ * -XX:PermSize=128m -XX:MaxPermSize=256m
+ * -XX:+UseConcMarkSweepGC
+ * -XX:+UseParNewGC
+ * -XX:CMSInitiatingOccupancyFraction=85
+ * -XX:+UseCMSInitiatingOccupancyOnly
+ * -XX:+ExplicitGCInvokesConcurrent
+ * -XX:+UseCMSCompactAtFullCollection
+ * -XX:CMSFullGCsBeforeCompaction=6
+ * -XX:+HeapDumpOnOutOfMemoryError
+ * -XX:HeapDumpPath=/usr/share/software/apache-tomcat/logs/oom.log
+ * -XX:+PrintGCDetails
+ * -XX:+PrintGCDateStamps
+ */

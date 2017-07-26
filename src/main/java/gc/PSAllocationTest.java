@@ -8,7 +8,7 @@ package gc;
  *
  * Created by liubingguang on 2017/7/20.
  */
-public class AllocationTest {
+public class PSAllocationTest {
 
     private static final int _1MB = 1024 * 1024;
 

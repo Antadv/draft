@@ -21,12 +21,12 @@ public class SOAClientFactory extends BaseClientFactory {
     }
 
     private SOAClientFactory(ClientConfig config) {
-        ServerAccesser serverAccesser = new ServerAccesser();
+        ServerAccessor serverAccessor = new ServerAccessor();
         Class<?>[] classes = {
                 TestAService.class,
                 TestBService.class
         };
-        putAllMethodRelatedSameValueToMap(serverAccesser, classes);
+        putAllMethodRelatedSameValueToMap(serverAccessor, classes);
     }
 
     private static void putAllMethodRelatedSameValueToMap(Callback callback, Class<?>...classes) {

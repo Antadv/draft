@@ -6,8 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * 使用 CountDownLatch 来启动和停止线程
- * (并发编程实战书中例子)
+ * 闭锁(改编于并发编程实战书中例子)
  * Created by liubingguang on 2017/8/16.
  */
 public class TestHarness {
@@ -39,8 +38,14 @@ public class TestHarness {
                 }
             };
             t.start();
-            Thread.sleep(500);
         }
+
+        // 创建的线程需要等待CPU的调配
+        // 可能主线程已经执行了 startGate.countDown()
+        // 而异步线程还在阻塞
+        // 为了让结果达到预期
+        // 让主线程sleep
+        Thread.sleep(500);
 
         startGate.countDown();
         endGate.await();

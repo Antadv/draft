@@ -51,7 +51,7 @@ public class ClassLoaderTest {
     @Test
     public void test() throws Exception {
         CustomClassLoader classLoader = new CustomClassLoader("E:\\");
-        Class<?> clazz = classLoader.loadClass("HelloWorld");
+        Class<?> clazz = classLoader.loadClass("ExpensiveFunction");
         Object obj = clazz.newInstance();
         Method testMethod = clazz.getMethod("test", int.class);
         String title = String.valueOf(testMethod.invoke(obj, 1));
@@ -61,7 +61,7 @@ public class ClassLoaderTest {
 
     @Test
     public void test2() throws Exception {
-        Class<?> clazz = Class.forName("HelloWorld", false, new CustomClassLoader("E:\\"));
+        Class<?> clazz = Class.forName("ExpensiveFunction", false, new CustomClassLoader("E:\\"));
         String content = String.valueOf(clazz.getField("content").get(clazz));
         /**
          * 这里会打印content的值

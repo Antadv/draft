@@ -24,6 +24,5 @@ public class Memoizer<A, V> implements Computable<A, V> {
         }
         cache.put(arg, result);
         return result;
-
     }
 }

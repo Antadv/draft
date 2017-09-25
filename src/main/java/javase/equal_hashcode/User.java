@@ -36,8 +36,8 @@ public class User {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(11, 31).append(getId())
-                                                                           .append(getName())
-                                                                           .toHashCode();
+                                          .append(getName())
+                                          .toHashCode();
     }
 
     public static void main(String[] args) {

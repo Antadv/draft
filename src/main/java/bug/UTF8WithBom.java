@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.DriverManager;
 
 /**
  * utf-8 bom 引起的读取配置文件失败的bug
@@ -18,6 +19,9 @@ public class UTF8WithBom {
             System.out.println(resource.getPath());
             File file = new File(resource.getPath());
             System.out.println(FileUtils.readFileToString(file));
+            System.out.println(Thread.currentThread().getContextClassLoader());
         }
+        System.out.println(System.getProperty("java.class.path"));
+        System.out.println("DriverManager class loader:" + DriverManager.class.getClassLoader());
     }
 }

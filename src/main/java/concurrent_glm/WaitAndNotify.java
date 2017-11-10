@@ -6,6 +6,8 @@ package concurrent_glm;
  * @see Object#notify()     等待队列中随机唤醒一个
  * @see Object#notifyAll()  唤醒所有
  *
+ * <p>wait() notify() 执行前都必须对象的锁</p>
+ *
  * @author LBG - 2017/9/21 0021
  */
 public class WaitAndNotify {
@@ -35,6 +37,8 @@ public class WaitAndNotify {
                 obj.notify();
 
                 // 注释下面代码，观察T2 start时间和T1 notified时间
+                // 下面代码主要是为了演示 obj.notify() 后 t1 虽然被唤醒了，但是并不能立即继续执行
+                // 因为 t2 还没执行完，还没释放锁，t1 必须获得锁才能继续执行
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {

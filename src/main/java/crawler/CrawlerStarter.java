@@ -3,7 +3,7 @@ package crawler;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import utils.http.HttpUtils;
 
 import java.io.IOException;

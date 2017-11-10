@@ -17,7 +17,7 @@ public class JoinAndYield {
         public void run() {
             for (i = 0; i < 10000; i++) {
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -31,7 +31,7 @@ public class Mutex {
     }
 
     public boolean unlock() {
-        return sync.tryRelease(1);
+        return sync.release(1);
     }
 
     public boolean isLocked() {

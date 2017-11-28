@@ -42,6 +42,9 @@ public class Mutex {
         sync.acquireInterruptibly(1);
     }
 
+    /**
+     * 静态内部类，继承同步器
+     */
     private class Sync extends AbstractQueuedSynchronizer {
 
         /**

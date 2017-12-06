@@ -5,41 +5,50 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 
 /**
  * 通过 AQS 自定义同步组件
  *
  * @author LBG - 2017/11/8 0008
  */
-public class Mutex {
+public class Mutex implements Lock {
 
     private final Sync sync = new Sync();
 
+    @Override
     public void lock() {
         sync.acquire(1);
     }
 
+    @Override
+    public void lockInterruptibly() throws InterruptedException {
+        sync.acquireInterruptibly(1);
+    }
+
+    @Override
     public boolean tryLock() {
         return sync.tryAcquire(1);
     }
 
-    /**
-     * 限时获取，可中断
-     */
-    public boolean tryLock(long timeout, TimeUnit unit) throws InterruptedException {
-        return sync.tryAcquireNanos(1, unit.toNanos(timeout));
+    @Override
+    public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
+        return false;
     }
 
-    public boolean unlock() {
-        return sync.release(1);
+    @Override
+    public void unlock() {
+        sync.release(1);
+    }
+
+    @Override
+    public Condition newCondition() {
+        return null;
     }
 
     public boolean isLocked() {
         return sync.isHeldExclusively();
-    }
-
-    public void lockInterruptible() throws InterruptedException {
-        sync.acquireInterruptibly(1);
     }
 
     /**

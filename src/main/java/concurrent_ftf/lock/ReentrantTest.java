@@ -19,13 +19,7 @@ public class ReentrantTest {
 
     public static void main(String[] args) {
         // synchronized
-        Thread t1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                syncA();
-            }
-        });
-        t1.start();
+        syncA();
 
         // ReentrantLock
         lockA();

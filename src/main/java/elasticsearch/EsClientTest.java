@@ -1,5 +1,7 @@
 package elasticsearch;
 
+import com.google.common.base.Preconditions;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
@@ -39,7 +41,7 @@ public class EsClientTest {
         dataParam.setDataMap(dataMap);
         dataParam.setDocId("11");
         try {
-            IndexResponse indexResponse = EsClient.insertData(dataParam);
+            IndexResponse indexResponse = EsClient.index(dataParam);
             if (indexResponse.isCreated()) {
                 System.out.println("id=" + indexResponse.getId());
             }
@@ -59,7 +61,7 @@ public class EsClientTest {
     public void testSearch() {
         try {
             dataParam.setSearchWord("中国");
-            SearchResponse searchResponse = EsClient.search(dataParam);
+            SearchResponse searchResponse = EsClient.query(dataParam);
             for (SearchHit hit : searchResponse.getHits()) {
                 String id = String.valueOf(hit.getSource().get("id"));
                 String title = String.valueOf(hit.getSource().get("title"));
@@ -107,6 +109,24 @@ public class EsClientTest {
         dataParam.setDocId("AVywioMZjA4CE3gKEJ0p");
         DeleteResponse response = EsClient.delete(dataParam);
         System.out.println(response.getId());
+    }
+
+    @Test
+    public void addDoc() throws IOException {
+        dataParam.setIndex("company");
+        dataParam.setType("employee");
+        dataParam.setDocId("20");
+        Map<String, Object> source = new HashMap<>();
+        source.put("name", "tome");
+        source.put("age", 20);
+        dataParam.setDataMap(source);
+
+        IndexResponse response = EsClient.index(dataParam);
+        System.out.println(response);
+    }
+
+    public static void main(String[] args) {
+        Preconditions.checkState(StringUtils.isNotBlank("2322323"), "null null");
     }
 
 }

@@ -54,6 +54,7 @@ public class HttpUtils {
     public static String post(String url, String postBody) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(url);
+        httpPost.addHeader("Content-type", "application/json");
         httpPost.setEntity(new StringEntity(postBody, Charset.forName(DEFAULT_CHARSET)));
 
         CloseableHttpResponse httpResponse = null;

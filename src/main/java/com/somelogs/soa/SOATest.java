@@ -11,6 +11,7 @@ import com.somelogs.utils.JsonUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,6 +31,8 @@ public class SOATest {
         AddUserRequest param = new AddUserRequest();
         param.setUsername("tom");
         param.setMobile("18978754455");
+        param.setList(Arrays.asList(1L, 2L));
+
         Response<Long> response = userClient.addUser(param);
         System.out.println("--------userId=" + response);
     }

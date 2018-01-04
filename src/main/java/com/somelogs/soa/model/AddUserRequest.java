@@ -2,6 +2,8 @@ package com.somelogs.soa.model;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 添加用户参数
  *
@@ -12,4 +14,5 @@ public class AddUserRequest {
 
     private String username;
     private String mobile;
+    private List<Long> list;
 }

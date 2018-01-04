@@ -2,6 +2,7 @@ package com.somelogs.soa.client;
 
 import com.somelogs.soa.annotation.SOARequestURL;
 import com.somelogs.soa.model.AddUserRequest;
+import com.somelogs.soa.model.Response;
 
 /**
  * User Client 提供外部调用
@@ -12,5 +13,5 @@ import com.somelogs.soa.model.AddUserRequest;
 public interface UserClient {
 
     @SOARequestURL(url = "/addUser")
-    Long addUser(AddUserRequest param);
+    Response<Long> addUser(AddUserRequest param);
 }

@@ -8,9 +8,13 @@ import com.somelogs.soa.proxy.ServerAccessor;
  *
  * @author LBG - 2018/1/4 0004
  */
-public class UserClientFactory {
+public class SOAClientFactory {
 
-    private static final ServerAccessor ACCESSOR = new ServerAccessor();
+    private ServerAccessor ACCESSOR;
+
+    public SOAClientFactory(String serverUrl) {
+        ACCESSOR = new ServerAccessor(serverUrl);
+    }
 
     public <T> T create(Class<T> clazz) {
         Enhancer enhancer = new Enhancer();

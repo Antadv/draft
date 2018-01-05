@@ -3,7 +3,7 @@ package com.somelogs.soa.annotation;
 import java.lang.annotation.*;
 
 /**
- * the annotation represents argument a JSON parameter,
+ * the annotation represents argument is a JSON parameter,
  * and then custom argument resolver will deserialize
  * the parameter to specified Java bean.
  *

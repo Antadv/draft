@@ -1,12 +1,12 @@
 package com.somelogs.javase.javap.file;
 
-import com.somelogs.javase.javap.constantpool.ConstantPoolInfo;
+import com.somelogs.javase.javap.constantpool.ConstantPool;
 import com.somelogs.javase.javap.datatype.U2;
 import com.somelogs.javase.javap.datatype.U4;
 import lombok.Data;
 
 /**
- * 描述
+ * class info
  *
  * @author LBG - 2018/1/15 0015 16:42
  */
@@ -36,9 +36,16 @@ public class ClassInfo {
     /**
      * cp_info
      */
-    private ConstantPoolInfo cpInfo;
+    private ConstantPool cpInfo;
 
-
-    public void print() {
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(magic.getHexValue()).append("\n")
+                .append(minorVersion.getValue()).append("\n")
+                .append(majorVersion.getValue()).append("\n")
+                .append(constantPoolCount.getValue()).append("\n")
+                .append(cpInfo.toString());
+        return builder.toString();
     }
 }

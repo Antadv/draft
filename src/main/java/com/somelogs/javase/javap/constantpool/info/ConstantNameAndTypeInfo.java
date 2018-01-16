@@ -1,6 +1,9 @@
 package com.somelogs.javase.javap.constantpool.info;
 
+import com.somelogs.javase.javap.constantpool.ConstantPoolInfo;
 import lombok.Data;
+
+import java.io.InputStream;
 
 /**
  * Constant_NameAndType_info
@@ -8,7 +11,7 @@ import lombok.Data;
  * @author LBG - 2018/1/15 0015 17:42
  */
 @Data
-public class ConstantNameAndTypeInfo {
+public class ConstantNameAndTypeInfo extends ConstantPoolInfo {
 
     /**
      * tag
@@ -24,4 +27,9 @@ public class ConstantNameAndTypeInfo {
      * descriptor index
      */
     private int descriptorIndex;
+
+    @Override
+    public void read(InputStream inputStream) {
+
+    }
 }

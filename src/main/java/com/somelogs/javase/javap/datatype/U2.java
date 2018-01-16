@@ -8,10 +8,12 @@ import java.io.InputStream;
  *
  * @author LBG - 2018/1/15 0015 16:19
  */
-public class U2 extends BaseType {
+public class U2 {
 
-    public U2(int value) {
-        super(value);
+    private short value;
+
+    public U2(short value) {
+        this.value = value;
     }
 
     public static U2 read(InputStream inputStream) {
@@ -21,11 +23,19 @@ public class U2 extends BaseType {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int num = 0;
+        short num = 0;
         for (byte b : bytes) {
             num <<= 8;
             num |= (b & 0xff);
         }
-        return new U2(num);
+        return new U2((short) (num & 0xFFFF));
+    }
+
+    public short getValue() {
+        return value;
+    }
+
+    public String getHexValue() {
+        return Integer.toHexString(value & 0xFFFF);
     }
 }

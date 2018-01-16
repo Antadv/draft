@@ -8,10 +8,12 @@ import java.io.InputStream;
  *
  * @author LBG - 2018/1/15 0015 16:19
  */
-public class U4 extends BaseType {
+public class U4 {
+
+    private int value;
 
     public U4(int value) {
-        super(value);
+        this.value = value;
     }
 
     public static U4 read(InputStream inputStream) {
@@ -27,5 +29,13 @@ public class U4 extends BaseType {
             num |= b & 0xFF;
         }
         return new U4(num);
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public String getHexValue() {
+        return Integer.toHexString(value);
     }
 }

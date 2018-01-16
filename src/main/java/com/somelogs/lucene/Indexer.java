@@ -19,8 +19,8 @@ public class Indexer {
         //document.add(new TextField("content", artical.getContent(), Field.Store.YES));
         //
         //Directory directory = FSDirectory.open(new File("./indexDir/"));
-        //Analyzer analyzer = new StandardAnalyzer();
-        //IndexWriterConfig indexWriterConfig = new IndexWriterConfig(Version.LATEST, analyzer);
+        //Analyzer analyze = new StandardAnalyzer();
+        //IndexWriterConfig indexWriterConfig = new IndexWriterConfig(Version.LATEST, analyze);
         //IndexWriter indexWriter = new IndexWriter(directory, indexWriterConfig);
         //indexWriter.addDocument(document);
         //indexWriter.close();

@@ -1,6 +1,6 @@
 package com.somelogs.javase.javap;
 
-import com.somelogs.javase.javap.constantpool.ConstantPoolInfo;
+import com.somelogs.javase.javap.constantpool.ConstantPool;
 import com.somelogs.javase.javap.datatype.U2;
 import com.somelogs.javase.javap.datatype.U4;
 import com.somelogs.javase.javap.file.ClassInfo;
@@ -8,7 +8,7 @@ import com.somelogs.javase.javap.file.ClassInfo;
 import java.io.InputStream;
 
 /**
- * class analyzer
+ * class analyze
  *
  * @author LBG - 2018/1/15 0015
  */
@@ -16,7 +16,7 @@ public class ClassAnalyzer {
 
     private ClassAnalyzer() {}
 
-    public static ClassInfo analyzer(InputStream input) {
+    public static ClassInfo analyze(InputStream input) {
         ClassInfo classInfo = new ClassInfo();
 
         // magic
@@ -34,17 +34,9 @@ public class ClassAnalyzer {
         classInfo.setConstantPoolCount(cpCount);
 
         // constant_pool
-        ConstantPoolInfo cpInfo = getConstantPoolInfo(input, Integer.valueOf(cpCount.toHexString()));
-        classInfo.setCpInfo(cpInfo);
+        int cpActualCount = cpCount.getValue() - 1;
+        ConstantPool constantPool = new ConstantPool(cpActualCount);
 
-        return null;
-    }
-
-    /**
-     * get constant pool info
-     */
-    private static ConstantPoolInfo getConstantPoolInfo(InputStream input, int cpCount) {
-        int cpIndex = 1;
-        return null;
+        return classInfo;
     }
 }

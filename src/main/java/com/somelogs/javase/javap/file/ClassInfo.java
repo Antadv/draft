@@ -5,6 +5,8 @@ import com.somelogs.javase.javap.datatype.U2;
 import com.somelogs.javase.javap.datatype.U4;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * class info
  *
@@ -13,38 +15,34 @@ import lombok.Data;
 @Data
 public class ClassInfo {
 
-    /**
-     * magic
-     */
     private U4 magic;
-
-    /**
-     * minor_version
-     */
     private U2 minorVersion;
-
-    /**
-     * major_version
-     */
     private U2 majorVersion;
-
-    /**
-     * constant_pool_count
-     */
     private U2 constantPoolCount;
-
-    /**
-     * cp_info
-     */
     private ConstantPool cpInfo;
+    private String accessFlags;
+    private String classFullyQualifiedName;
+    private String superClassFullyQualifiedName;
+    private int interfaceCount;
+    private List<String> interfaceList;
 
     public void print() {
-        String classInfo =  magic.getHexValue() + "\n" +
-                minorVersion.getValue() + "\n" +
-                majorVersion.getValue() + "\n" +
-                constantPoolCount.getValue() + "\n" +
-                cpInfo.getContent();
+        StringBuilder sb = new StringBuilder();
+        sb.append("magic: ").append(magic.getHexValue()).append("\n")
+                .append("minor version: ").append(minorVersion.getValue()).append("\n")
+                .append("major version: ").append(majorVersion.getValue()).append("\n")
+                .append("Constant pool:").append("\n")
+                .append("Access flags: ").append(accessFlags).append("\n")
+                .append(cpInfo.getContent()).append("\n")
+                .append("Class FQN: ").append(classFullyQualifiedName).append("\n")
+                .append("Super class FQN: ").append(superClassFullyQualifiedName).append("\n");
 
-        System.out.println(classInfo);
+        sb.append("Interfaces: ").append(interfaceCount);
+        if (interfaceCount > 0) {
+            for (String interfaceName : interfaceList) {
+                sb.append(interfaceName).append("\n");
+            }
+        }
+        System.out.println(sb.toString());
     }
 }

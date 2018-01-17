@@ -89,13 +89,19 @@ public class ClassAnalyzer {
                 String descriptor = cpInfoList.get(descriptorIndex.getValue() - 1).getContent();
                 table.setDescriptor(descriptor);
 
+                // attribute_info
                 U2 attributes = U2.read(inputStream);
                 List<AttributeInfo> attributeList = new ArrayList<>(attributes.getValue());
                 if (attributeList.size() > 0) {
                     for (int j = 0; j < attributeList.size(); j++) {
-
+                        U2 attrNameIndex = U2.read(inputStream);
+                        String attrName = cpInfoList.get(attrNameIndex.getValue() - 1).getContent();
+                        AttributeInfo attributeInfo = AttributeInfo.getAttrByName(attrName);
+                        attributeInfo.analyze(inputStream);
+                        attributeList.add(attributeInfo);
                     }
                 }
+                table.setAttributeInfoList(attributeList);
             }
         }
 

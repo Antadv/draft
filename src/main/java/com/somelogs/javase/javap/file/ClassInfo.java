@@ -38,14 +38,13 @@ public class ClassInfo {
      */
     private ConstantPool cpInfo;
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(magic.getHexValue()).append("\n")
-                .append(minorVersion.getValue()).append("\n")
-                .append(majorVersion.getValue()).append("\n")
-                .append(constantPoolCount.getValue()).append("\n")
-                .append(cpInfo.toString());
-        return builder.toString();
+    public void print() {
+        String classInfo =  magic.getHexValue() + "\n" +
+                minorVersion.getValue() + "\n" +
+                majorVersion.getValue() + "\n" +
+                constantPoolCount.getValue() + "\n" +
+                cpInfo.getContent();
+
+        System.out.println(classInfo);
     }
 }

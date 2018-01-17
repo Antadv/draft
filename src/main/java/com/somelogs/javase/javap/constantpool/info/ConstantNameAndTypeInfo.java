@@ -1,7 +1,9 @@
 package com.somelogs.javase.javap.constantpool.info;
 
 import com.somelogs.javase.javap.constantpool.ConstantPoolInfo;
-import lombok.Data;
+import com.somelogs.javase.javap.datatype.U2;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.InputStream;
 
@@ -10,13 +12,9 @@ import java.io.InputStream;
  *
  * @author LBG - 2018/1/15 0015 17:42
  */
-@Data
+@Getter
+@Setter
 public class ConstantNameAndTypeInfo extends ConstantPoolInfo {
-
-    /**
-     * tag
-     */
-    private int tag;
 
     /**
      * constant index
@@ -30,6 +28,9 @@ public class ConstantNameAndTypeInfo extends ConstantPoolInfo {
 
     @Override
     public void read(InputStream inputStream) {
-
+        U2 constant = U2.read(inputStream);
+        U2 descriptor = U2.read(inputStream);
+        constantIndex = constant.getValue();
+        descriptorIndex = descriptor.getValue();
     }
 }

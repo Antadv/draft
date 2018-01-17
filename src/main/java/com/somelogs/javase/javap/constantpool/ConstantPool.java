@@ -5,6 +5,7 @@ import com.somelogs.javase.javap.datatype.U1;
 import lombok.Data;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,13 +21,29 @@ public class ConstantPool {
 
     public ConstantPool(int cpCount) {
         this.cpCount = cpCount;
+        cpInfoList = new ArrayList<>(cpCount);
     }
 
-    public String getCpInfo() {
+    public String getContent() {
         StringBuilder builder = new StringBuilder();
-        for (ConstantPoolInfo info : cpInfoList) {
+        ConstantPoolInfo info;
+        for (int i = 0, size = cpInfoList.size(); i < size; i++) {
+            info = cpInfoList.get(i);
+            builder.append("#")
+                    .append(i + 1)
+                    .append("=")
+                    .append(ConstantTypeEnum.getNameByTag(info.getTag()))
+                    .append(" ")
+                    .append(info.getContent())
+                    .append("\n");
         }
-        return null;
+        return builder.toString();
+    }
+
+    public void analyze(InputStream inputStream) {
+        addCpInfo2List(inputStream);
+        parseIndexWithConstant();
+        parseIndexWithRef();
     }
 
     private void addCpInfo2List(InputStream inputStream) {

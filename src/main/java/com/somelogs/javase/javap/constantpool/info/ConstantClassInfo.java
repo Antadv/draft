@@ -16,7 +16,7 @@ import java.io.InputStream;
 @Getter
 public class ConstantClassInfo extends ConstantPoolInfo {
 
-    private int index;
+    private short index;
 
     @Override
     public void read(InputStream inputStream) {

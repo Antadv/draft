@@ -17,11 +17,15 @@ import java.util.List;
 public class ConstantPool {
 
     private int cpCount;
-    private List<ConstantPoolInfo> cpInfoList;
+    private static List<ConstantPoolInfo> cpInfoList;
 
     public ConstantPool(int cpCount) {
         this.cpCount = cpCount;
         cpInfoList = new ArrayList<>(cpCount);
+    }
+
+    public static String getStringByIndex(short index) {
+        return cpInfoList.get(index - 1).getContent();
     }
 
     public String getContent() {
@@ -48,6 +52,7 @@ public class ConstantPool {
 
     private void addCpInfo2List(InputStream inputStream) {
         for (int i = 1; i <= cpCount; i++) {
+            System.out.println(i);
             U1 tag = U1.read(inputStream);
             ConstantPoolInfo info = ConstantPoolInfo.getCpInfoByTag(tag.getValue());
             info.setTag(tag.getValue());
@@ -60,16 +65,14 @@ public class ConstantPool {
         for (ConstantPoolInfo poolInfo : cpInfoList) {
             if (poolInfo instanceof ConstantClassInfo) {
                 ConstantClassInfo info = (ConstantClassInfo) poolInfo;
-                info.setContent(cpInfoList.get(info.getIndex() - 1).getContent());
-
+                info.setContent(getStringByIndex(info.getIndex()));
             } else if (poolInfo instanceof ConstantStringInfo) {
                 ConstantStringInfo info = (ConstantStringInfo) poolInfo;
-                info.setContent(cpInfoList.get(info.getIndex() - 1).getContent());
-
+                info.setContent(getStringByIndex(info.getIndex()));
             } else if (poolInfo instanceof ConstantNameAndTypeInfo) {
                 ConstantNameAndTypeInfo info = (ConstantNameAndTypeInfo) poolInfo;
-                String simpleName = cpInfoList.get(info.getConstantIndex() - 1).getContent();
-                String descriptor = cpInfoList.get(info.getDescriptorIndex() - 1).getContent();
+                String simpleName = getStringByIndex(info.getConstantIndex());
+                String descriptor = getStringByIndex(info.getDescriptorIndex());
                 info.setContent(simpleName + ":" + descriptor);
             }
         }
@@ -77,22 +80,10 @@ public class ConstantPool {
 
     private void parseIndexWithRef() {
         for (ConstantPoolInfo poolInfo : cpInfoList) {
-            if (poolInfo instanceof ConstantFieldRefInfo) {
-                ConstantFieldRefInfo info = (ConstantFieldRefInfo) poolInfo;
-                String classDesc = cpInfoList.get(info.getClassIndex() - 1).getContent();
-                String descriptor = cpInfoList.get(info.getDescriptorIndex() - 1).getContent();
-                poolInfo.setContent(classDesc + "." + descriptor);
-
-            } else if (poolInfo instanceof ConstantMethodRefInfo) {
-                ConstantMethodRefInfo info = (ConstantMethodRefInfo) poolInfo;
-                String classDesc = cpInfoList.get(info.getClassIndex() - 1).getContent();
-                String descriptor = cpInfoList.get(info.getDescriptorIndex() - 1).getContent();
-                poolInfo.setContent(classDesc + "." + descriptor);
-
-            } else if (poolInfo instanceof ConstantInterfaceMethodRefInfo) {
-                ConstantInterfaceMethodRefInfo info = (ConstantInterfaceMethodRefInfo) poolInfo;
-                String classDesc = cpInfoList.get(info.getClassIndex() - 1).getContent();
-                String descriptor = cpInfoList.get(info.getDescriptorIndex() - 1).getContent();
+            if (poolInfo instanceof ConstantRefInfo) {
+                ConstantRefInfo info = (ConstantRefInfo) poolInfo;
+                String classDesc = getStringByIndex(info.getClassIndex());
+                String descriptor = getStringByIndex(info.getDescriptorIndex());
                 poolInfo.setContent(classDesc + "." + descriptor);
 
             } else if (poolInfo instanceof ConstantMethodTypeInfo) {

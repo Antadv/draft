@@ -1,15 +1,25 @@
 package com.somelogs.javase.javap.attribute;
 
+import com.somelogs.javase.javap.constantpool.ConstantPool;
+import com.somelogs.javase.javap.datatype.U2;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.InputStream;
 
 /**
- * 描述
+ * Attribute: SourceFile
  *
  * @author LBG - 2018/1/17 0017
  */
+@Getter
+@Setter
 public class SourceFileAttrInfo extends AttributeInfo {
-    @Override
-    public void analyze(InputStream inputStream) {
 
+    private String sourceFileName;
+
+    @Override
+    public void readMore(InputStream inputStream) {
+        sourceFileName = ConstantPool.getStringByIndex(U2.read(inputStream).getValue());
     }
 }

@@ -3,13 +3,13 @@ package com.somelogs.javase.javap.attribute;
 import java.io.InputStream;
 
 /**
- * 描述
+ * Attribute: BootstrapMethods
  *
  * @author LBG - 2018/1/17 0017
  */
 public class BootstrapMethodsAttrInfo extends AttributeInfo {
-    @Override
-    public void analyze(InputStream inputStream) {
 
+    @Override
+    public void readMore(InputStream inputStream) {
     }
 }

@@ -20,7 +20,6 @@ public class ConstantIntegerInfo extends ConstantPoolInfo {
 
     @Override
     public void read(InputStream inputStream) {
-        U4 read = U4.read(inputStream);
-        value = read.getValue();
+        value = U4.read(inputStream).getValue();
     }
 }

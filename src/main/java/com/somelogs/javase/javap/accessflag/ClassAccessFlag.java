@@ -5,18 +5,15 @@ package com.somelogs.javase.javap.accessflag;
  *
  * @author LBG - 2018/1/17 0017
  */
-public class ClassAccessFlag {
+public class ClassAccessFlag extends AccessFlag {
 
-    private static final short ACC_PUBLIC = 0x0001;
-    private static final short ACC_FINAL = 0x0010;
     private static final short ACC_SUPER = 0x0020;
     private static final short ACC_INTERFACE = 0x0200;
     private static final short ACC_ABSTRACT = 0x0400;
-    private static final short ACC_SYNTHETIC = 0x1000;
     private static final short ACC_ANNOTATION = 0x2000;
-    private static final short ACC_ENUM = 0x4000;
 
-    public static String getAccessFlags(short flag) {
+    @Override
+    public String getAccessFlags(short flag) {
         StringBuilder flags = new StringBuilder();
         if ((flag & ACC_PUBLIC) != 0) {
             flags.append("ACC_PUBLIC ");

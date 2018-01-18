@@ -1,11 +1,14 @@
 package com.somelogs.javase.javap.attribute;
 
+import com.somelogs.javase.javap.constantpool.ConstantPool;
+import com.somelogs.javase.javap.datatype.U2;
+import com.somelogs.javase.javap.datatype.U4;
 import lombok.Data;
 
 import java.io.InputStream;
 
 /**
- * attribute info
+ * Base attribute info
  *
  * @author LBG - 2018/1/17 0017
  */
@@ -25,9 +28,29 @@ public abstract class AttributeInfo {
     private static final String STACK_MAP_TABLE = "StackMapTable";
     private static final String BOOTSTRAP_METHODS = "BootstrapMethods";
 
+    /**
+     * attribute name
+     */
+    protected String attributeName;
+
+    /**
+     * attribute_length
+     */
+    protected int attributeLength;
+
+    /**
+     * content to show
+     */
     protected String content;
 
-    public abstract void analyze(InputStream inputStream);
+    public abstract void readMore(InputStream inputStream);
+
+    public void read(InputStream inputStream) {
+        short attrNameIndex = U2.read(inputStream).getValue();
+        attributeName = ConstantPool.getStringByIndex(attrNameIndex);
+        attributeLength = U4.read(inputStream).getValue();
+        readMore(inputStream);
+    }
 
     public static AttributeInfo getAttrByName(String attrName) {
         AttributeInfo info;
@@ -69,7 +92,7 @@ public abstract class AttributeInfo {
                 info = new BootstrapMethodsAttrInfo();
                 break;
             default:
-                throw new RuntimeException("unknown attr name: " + attrName);
+                throw new RuntimeException("unknown attribute name: " + attrName);
         }
         return info;
 

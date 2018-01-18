@@ -1,10 +1,10 @@
 package com.somelogs.javase.javap;
 
+import com.somelogs.javase.javap.accessflag.AccessFlag;
 import com.somelogs.javase.javap.accessflag.ClassAccessFlag;
 import com.somelogs.javase.javap.accessflag.FieldAccessFlag;
 import com.somelogs.javase.javap.attribute.AttributeInfo;
 import com.somelogs.javase.javap.constantpool.ConstantPool;
-import com.somelogs.javase.javap.constantpool.ConstantPoolInfo;
 import com.somelogs.javase.javap.datatype.U2;
 import com.somelogs.javase.javap.datatype.U4;
 import com.somelogs.javase.javap.file.ClassInfo;
@@ -41,21 +41,19 @@ public class ClassAnalyzer {
         classInfo.setConstantPoolCount(cpCount);
 
         // constant_pool
-        int cpActualCount = cpCount.getValue() - 1;
-        ConstantPool constantPool = new ConstantPool(cpActualCount);
+        ConstantPool constantPool = new ConstantPool(cpCount.getValue() - 1);
         constantPool.analyze(inputStream);
         classInfo.setCpInfo(constantPool);
-        List<ConstantPoolInfo> cpInfoList = constantPool.getCpInfoList();
 
         // access_flag
-        U2 read = U2.read(inputStream);
-        classInfo.setAccessFlags(ClassAccessFlag.getAccessFlags(read.getValue()));
+        U2 classAccessFlag = U2.read(inputStream);
+        classInfo.setAccessFlags(new ClassAccessFlag().getAccessFlags(classAccessFlag.getValue()));
 
         // class_index, super_class_index
         U2 classIndex = U2.read(inputStream);
         U2 superClassIndex = U2.read(inputStream);
-        String classFQN = cpInfoList.get(classIndex.getValue() - 1).getContent();
-        String superFQN = cpInfoList.get(superClassIndex.getValue() - 1).getContent();
+        String classFQN = ConstantPool.getStringByIndex(classIndex.getValue());
+        String superFQN = ConstantPool.getStringByIndex(superClassIndex.getValue());
         classInfo.setClassFullyQualifiedName(classFQN);
         classInfo.setSuperClassFullyQualifiedName(superFQN);
 
@@ -65,28 +63,35 @@ public class ClassAnalyzer {
         if (interfaceList.size() > 0) {
             for (int i = 0; i < interfaceList.size(); i++) {
                 U2 interfaceRef = U2.read(inputStream);
-                interfaceList.add(cpInfoList.get(interfaceRef.getValue() - 1).getContent());
+                interfaceList.add(ConstantPool.getStringByIndex(interfaceRef.getValue()));
             }
         }
         classInfo.setInterfaceCount(interfaceList.size());
         classInfo.setInterfaceList(interfaceList);
 
         // field_info
+        readFieldInfo(classInfo, inputStream);
+
+        return classInfo;
+    }
+
+    private static void readFieldInfo(ClassInfo classInfo, InputStream inputStream) {
         U2 fieldCount = U2.read(inputStream);
         List<FieldTable> fieldList = new ArrayList<>(fieldCount.getValue());
         if (fieldList.size() > 0) {
+            AccessFlag accessFlag = new FieldAccessFlag();
             for (int i = 0; i < fieldList.size(); i++) {
                 FieldTable table = new FieldTable();
-                U2 accessFlag = U2.read(inputStream);
-                String acc = FieldAccessFlag.getAccessFlags(accessFlag.getValue());
-                table.setAccessFlag(acc);
+                U2 accessFlagU2 = U2.read(inputStream);
+                String flagDesc = accessFlag.getAccessFlags(accessFlagU2.getValue());
+                table.setAccessFlag(flagDesc);
 
                 U2 nameIndex = U2.read(inputStream);
-                String simpleName = cpInfoList.get(nameIndex.getValue() - 1).getContent();
+                String simpleName = ConstantPool.getStringByIndex(nameIndex.getValue());
                 table.setSimpleName(simpleName);
 
                 U2 descriptorIndex = U2.read(inputStream);
-                String descriptor = cpInfoList.get(descriptorIndex.getValue() - 1).getContent();
+                String descriptor = ConstantPool.getStringByIndex(descriptorIndex.getValue());
                 table.setDescriptor(descriptor);
 
                 // attribute_info
@@ -95,17 +100,15 @@ public class ClassAnalyzer {
                 if (attributeList.size() > 0) {
                     for (int j = 0; j < attributeList.size(); j++) {
                         U2 attrNameIndex = U2.read(inputStream);
-                        String attrName = cpInfoList.get(attrNameIndex.getValue() - 1).getContent();
+                        String attrName = ConstantPool.getStringByIndex(attrNameIndex.getValue());
                         AttributeInfo attributeInfo = AttributeInfo.getAttrByName(attrName);
-                        attributeInfo.analyze(inputStream);
+                        attributeInfo.readMore(inputStream);
                         attributeList.add(attributeInfo);
                     }
                 }
                 table.setAttributeInfoList(attributeList);
             }
         }
-
-
-        return classInfo;
+        classInfo.setFieldTableList(fieldList);
     }
 }

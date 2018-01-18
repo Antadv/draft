@@ -19,6 +19,7 @@ public abstract class ConstantPoolInfo {
     public static final short CONSTANT_LONG_INFO = 5;
     public static final short CONSTANT_DOUBLE_INFO = 6;
     public static final short CONSTANT_CLASS_INFO = 7;
+    public static final short CONSTANT_STRING_INFO = 8;
     public static final short CONSTANT_FIELD_REF_INFO = 9;
     public static final short CONSTANT_METHOD_REF_INFO = 10;
     public static final short CONSTANT_INTERFACE_METHOD_REF_INFO = 11;
@@ -60,14 +61,17 @@ public abstract class ConstantPoolInfo {
             case ConstantPoolInfo.CONSTANT_CLASS_INFO:
                 cpInfo = new ConstantClassInfo();
                 break;
+            case ConstantPoolInfo.CONSTANT_STRING_INFO:
+                cpInfo = new ConstantStringInfo();
+                break;
             case ConstantPoolInfo.CONSTANT_FIELD_REF_INFO:
-                cpInfo = new ConstantFieldRefInfo();
+                cpInfo = new ConstantRefInfo();
                 break;
             case ConstantPoolInfo.CONSTANT_METHOD_REF_INFO:
-                cpInfo = new ConstantMethodRefInfo();
+                cpInfo = new ConstantRefInfo();
                 break;
             case ConstantPoolInfo.CONSTANT_INTERFACE_METHOD_REF_INFO:
-                cpInfo = new ConstantInterfaceMethodRefInfo();
+                cpInfo = new ConstantRefInfo();
                 break;
             case ConstantPoolInfo.CONSTANT_NAME_AND_TYPE_INFO:
                 cpInfo = new ConstantNameAndTypeInfo();

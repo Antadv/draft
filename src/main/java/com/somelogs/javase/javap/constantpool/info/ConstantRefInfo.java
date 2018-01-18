@@ -8,20 +8,24 @@ import lombok.Setter;
 import java.io.InputStream;
 
 /**
- * Constant_NameAndType_info
+ * this class type contains three kinds of Constant info
  *
- * @author LBG - 2018/1/15 0015 17:42
+ *  <li>Constant_Fieldref_info</li>
+ *  <li>Constant_Methodref_info</li>
+ *  <li>Constant_Interface_Methodref_info</li>
+ *
+ * @author LBG - 2018/1/18 0018
  */
-@Getter
 @Setter
-public class ConstantNameAndTypeInfo extends ConstantPoolInfo {
+@Getter
+public class ConstantRefInfo extends ConstantPoolInfo {
 
-    private short constantIndex;
+    private short classIndex;
     private short descriptorIndex;
 
     @Override
     public void read(InputStream inputStream) {
-        constantIndex = U2.read(inputStream).getValue();
+        classIndex = U2.read(inputStream).getValue();
         descriptorIndex = U2.read(inputStream).getValue();
     }
 }

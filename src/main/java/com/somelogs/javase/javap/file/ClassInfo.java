@@ -3,7 +3,9 @@ package com.somelogs.javase.javap.file;
 import com.somelogs.javase.javap.constantpool.ConstantPool;
 import com.somelogs.javase.javap.datatype.U2;
 import com.somelogs.javase.javap.datatype.U4;
+import com.somelogs.javase.javap.table.FieldTable;
 import lombok.Data;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class ClassInfo {
     private String superClassFullyQualifiedName;
     private int interfaceCount;
     private List<String> interfaceList;
+    private List<FieldTable> fieldTableList;
 
     public void print() {
         StringBuilder sb = new StringBuilder();
@@ -38,10 +41,12 @@ public class ClassInfo {
                 .append("Super class FQN: ").append(superClassFullyQualifiedName).append("\n");
 
         sb.append("Interfaces: ").append(interfaceCount);
-        if (interfaceCount > 0) {
-            for (String interfaceName : interfaceList) {
-                sb.append(interfaceName).append("\n");
-            }
+        for (String interfaceName : interfaceList) {
+            sb.append(interfaceName).append("\n");
+        }
+        sb.append("Fields Count: ").append(fieldTableList.size()).append("\n");
+        if (CollectionUtils.isNotEmpty(fieldTableList)) {
+            sb.append("Field Table:").append("\n").append(fieldTableList).append("\n");
         }
         System.out.println(sb.toString());
     }

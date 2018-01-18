@@ -1,15 +1,24 @@
 package com.somelogs.javase.javap.attribute;
 
+import com.somelogs.javase.javap.datatype.U2;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.InputStream;
 
 /**
- * 描述
+ * Attribute: Signature
  *
  * @author LBG - 2018/1/17 0017
  */
+@Setter
+@Getter
 public class SignatureAttrInfo extends AttributeInfo {
-    @Override
-    public void analyze(InputStream inputStream) {
 
+    private short signatureIndex;
+
+    @Override
+    public void readMore(InputStream inputStream) {
+        signatureIndex = U2.read(inputStream).getValue();
     }
 }

@@ -24,4 +24,9 @@ public class ConstantValueAttrInfo extends AttributeInfo {
         short cpIndex = U2.read(inputStream).getValue();
         value = ConstantPool.getStringByIndex(cpIndex);
     }
+
+    @Override
+    public String getPrintContent() {
+        return "{type=" + attributeName + ", value=" + value + "}";
+    }
 }

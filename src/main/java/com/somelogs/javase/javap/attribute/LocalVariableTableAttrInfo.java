@@ -39,6 +39,11 @@ public class LocalVariableTableAttrInfo extends AttributeInfo {
         }
     }
 
+    @Override
+    public String getPrintContent() {
+        return null;
+    }
+
     @Data
     private class LocalVariableInfo {
         private int start;

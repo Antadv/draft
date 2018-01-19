@@ -5,8 +5,7 @@ import com.somelogs.javase.javap.datatype.U1;
 import lombok.Data;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * constant pool
@@ -17,52 +16,59 @@ import java.util.List;
 public class ConstantPool {
 
     private int cpCount;
-    private static List<ConstantPoolInfo> cpInfoList;
+    private static Map<Integer, ConstantPoolInfo> cpInfoMap;
 
     public ConstantPool(int cpCount) {
         this.cpCount = cpCount;
-        cpInfoList = new ArrayList<>(cpCount);
+        cpInfoMap = new LinkedHashMap<>(cpCount);
     }
 
     public static String getStringByIndex(short index) {
-        return cpInfoList.get(index - 1).getContent();
+        return cpInfoMap.get((int) index).getContent();
     }
 
     public String getContent() {
         StringBuilder builder = new StringBuilder();
-        ConstantPoolInfo info;
-        for (int i = 0, size = cpInfoList.size(); i < size; i++) {
-            info = cpInfoList.get(i);
+        for (Map.Entry<Integer, ConstantPoolInfo> entry : cpInfoMap.entrySet()) {
+            ConstantPoolInfo info = entry.getValue();
             builder.append("#")
-                    .append(i + 1)
+                    .append(entry.getKey())
                     .append("=")
                     .append(ConstantTypeEnum.getNameByTag(info.getTag()))
                     .append(" ")
                     .append(info.getContent())
                     .append("\n");
+
         }
         return builder.toString();
     }
 
     public void analyze(InputStream inputStream) {
-        addCpInfo2List(inputStream);
+        addCpInfo2Map(inputStream);
         parseIndexWithConstant();
         parseIndexWithRef();
     }
 
-    private void addCpInfo2List(InputStream inputStream) {
-        for (int i = 1; i <= cpCount; i++) {
-            System.out.println(i);
-            U1 tag = U1.read(inputStream);
-            ConstantPoolInfo info = ConstantPoolInfo.getCpInfoByTag(tag.getValue());
-            info.setTag(tag.getValue());
+    private void addCpInfo2Map(InputStream inputStream) {
+        int i = 1;
+        while (i <= cpCount) {
+            byte tag = U1.read(inputStream).getValue();
+            ConstantPoolInfo info = ConstantPoolInfo.getCpInfoByTag(tag);
+            info.setTag(tag);
             info.read(inputStream);
-            cpInfoList.add(info);
+            cpInfoMap.put(i, info);
+            // 8 字节的常量占用两个成员表空间
+            if (tag == ConstantPoolInfo.CONSTANT_LONG_INFO
+                    || tag == ConstantPoolInfo.CONSTANT_DOUBLE_INFO) {
+                i += 2;
+            } else {
+                i++;
+            }
         }
     }
 
     private void parseIndexWithConstant() {
-        for (ConstantPoolInfo poolInfo : cpInfoList) {
+        for (ConstantPoolInfo poolInfo : cpInfoMap.values()) {
             if (poolInfo instanceof ConstantClassInfo) {
                 ConstantClassInfo info = (ConstantClassInfo) poolInfo;
                 info.setContent(getStringByIndex(info.getIndex()));
@@ -79,7 +85,7 @@ public class ConstantPool {
     }
 
     private void parseIndexWithRef() {
-        for (ConstantPoolInfo poolInfo : cpInfoList) {
+        for (ConstantPoolInfo poolInfo : cpInfoMap.values()) {
             if (poolInfo instanceof ConstantRefInfo) {
                 ConstantRefInfo info = (ConstantRefInfo) poolInfo;
                 String classDesc = getStringByIndex(info.getClassIndex());

@@ -1,7 +1,6 @@
 package com.somelogs.javase.javap.attribute;
 
 import com.somelogs.javase.javap.datatype.U2;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,7 +35,19 @@ public class LineNumberTableAttrInfo extends AttributeInfo {
         }
     }
 
-    @Data
+    @Override
+    public String getPrintContent() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{type=LineNumberTable, table=[");
+        for (LineNumberInfo info : lineNumberInfoList) {
+            sb.append(info).append(", ");
+        }
+        sb.append("]}");
+        return sb.toString();
+    }
+
+    @Getter
+    @Setter
     private class LineNumberInfo {
 
         /**
@@ -48,5 +59,10 @@ public class LineNumberTableAttrInfo extends AttributeInfo {
          * java source file line number
          */
         private int lineNumber;
+
+        @Override
+        public String toString() {
+            return "{start=" + start + ", lineNumber=" + lineNumber + "}";
+        }
     }
 }

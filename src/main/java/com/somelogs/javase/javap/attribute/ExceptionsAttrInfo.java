@@ -2,7 +2,6 @@ package com.somelogs.javase.javap.attribute;
 
 import com.somelogs.javase.javap.constantpool.ConstantPool;
 import com.somelogs.javase.javap.datatype.U2;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,8 +34,25 @@ public class ExceptionsAttrInfo extends AttributeInfo {
         }
     }
 
-    @Data
+    @Override
+    public String getPrintContent() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{type=Exceptions");
+        for (ExceptionIndexTable exp : exceptionTable) {
+            sb.append(", exceptions=").append(exp).append(", ");
+        }
+        sb.append("}");
+        return sb.toString();
+    }
+
+    @Getter
+    @Setter
     private class ExceptionIndexTable {
         private String exceptionName;
+
+        @Override
+        public String toString() {
+            return exceptionName;
+        }
     }
 }

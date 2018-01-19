@@ -12,4 +12,9 @@ public class SyntheticAttrInfo extends AttributeInfo {
     @Override
     public void readMore(InputStream inputStream) {
     }
+
+    @Override
+    public String getPrintContent() {
+        return null;
+    }
 }

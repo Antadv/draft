@@ -22,4 +22,9 @@ public class SourceFileAttrInfo extends AttributeInfo {
     public void readMore(InputStream inputStream) {
         sourceFileName = ConstantPool.getStringByIndex(U2.read(inputStream).getValue());
     }
+
+    @Override
+    public String getPrintContent() {
+        return null;
+    }
 }

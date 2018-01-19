@@ -21,4 +21,9 @@ public class SignatureAttrInfo extends AttributeInfo {
     public void readMore(InputStream inputStream) {
         signatureIndex = U2.read(inputStream).getValue();
     }
+
+    @Override
+    public String getPrintContent() {
+        return null;
+    }
 }

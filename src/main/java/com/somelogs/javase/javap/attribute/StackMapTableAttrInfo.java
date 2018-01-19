@@ -29,6 +29,11 @@ public class StackMapTableAttrInfo extends AttributeInfo {
         }
     }
 
+    @Override
+    public String getPrintContent() {
+        return null;
+    }
+
     @Data
     private class StackMapFrame {
     }

@@ -16,7 +16,7 @@ public class Indexer {
         //document.add(new LongField("id", artical.getId(), Field.Store.YES));
         //document.add(new TextField("title", artical.getTitle(), Field.Store.YES));
         //document.add(new StringField("author", artical.getAuthor(), Field.Store.YES));
-        //document.add(new TextField("content", artical.getContent(), Field.Store.YES));
+        //document.add(new TextField("content", artical.getPrintContent(), Field.Store.YES));
         //
         //Directory directory = FSDirectory.open(new File("./indexDir/"));
         //Analyzer analyze = new StandardAnalyzer();

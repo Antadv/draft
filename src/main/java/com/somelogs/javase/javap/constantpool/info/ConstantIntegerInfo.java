@@ -21,5 +21,6 @@ public class ConstantIntegerInfo extends ConstantPoolInfo {
     @Override
     public void read(InputStream inputStream) {
         value = U4.read(inputStream).getValue();
+        content = String.valueOf(value);
     }
 }

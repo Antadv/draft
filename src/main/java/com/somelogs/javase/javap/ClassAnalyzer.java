@@ -8,7 +8,7 @@ import com.somelogs.javase.javap.constantpool.ConstantPool;
 import com.somelogs.javase.javap.datatype.U2;
 import com.somelogs.javase.javap.datatype.U4;
 import com.somelogs.javase.javap.file.ClassInfo;
-import com.somelogs.javase.javap.table.FieldTable;
+import com.somelogs.javase.javap.table.FieldInfo;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -58,57 +58,49 @@ public class ClassAnalyzer {
         classInfo.setSuperClassFullyQualifiedName(superFQN);
 
         // interface list
-        U2 interfaces = U2.read(inputStream);
-        List<String> interfaceList = new ArrayList<>(interfaces.getValue());
-        if (interfaceList.size() > 0) {
-            for (int i = 0; i < interfaceList.size(); i++) {
-                U2 interfaceRef = U2.read(inputStream);
-                interfaceList.add(ConstantPool.getStringByIndex(interfaceRef.getValue()));
-            }
+        short interfaces = U2.read(inputStream).getValue();
+        List<String> interfaceList = new ArrayList<>(interfaces);
+        for (int i = 0; i < interfaces; i++) {
+            U2 interfaceRef = U2.read(inputStream);
+            interfaceList.add(ConstantPool.getStringByIndex(interfaceRef.getValue()));
         }
-        classInfo.setInterfaceCount(interfaceList.size());
         classInfo.setInterfaceList(interfaceList);
 
         // field_info
-        readFieldInfo(classInfo, inputStream);
+        FieldInfo[] fieldInfoArray = readFieldInfo(inputStream);
+        classInfo.setFieldInfoArray(fieldInfoArray);
 
         return classInfo;
     }
 
-    private static void readFieldInfo(ClassInfo classInfo, InputStream inputStream) {
-        U2 fieldCount = U2.read(inputStream);
-        List<FieldTable> fieldList = new ArrayList<>(fieldCount.getValue());
-        if (fieldList.size() > 0) {
+    private static FieldInfo[] readFieldInfo(InputStream inputStream) {
+        short fieldCount = U2.read(inputStream).getValue();
+        FieldInfo[] fieldInfoArray = new FieldInfo[fieldCount];
+        for (int i = 0; i < fieldCount; i++) {
+            FieldInfo table = new FieldInfo();
             AccessFlag accessFlag = new FieldAccessFlag();
-            for (int i = 0; i < fieldList.size(); i++) {
-                FieldTable table = new FieldTable();
-                U2 accessFlagU2 = U2.read(inputStream);
-                String flagDesc = accessFlag.getAccessFlags(accessFlagU2.getValue());
-                table.setAccessFlag(flagDesc);
+            U2 accessFlagU2 = U2.read(inputStream);
+            String flagDesc = accessFlag.getAccessFlags(accessFlagU2.getValue());
+            table.setAccessFlag(flagDesc);
 
-                U2 nameIndex = U2.read(inputStream);
-                String simpleName = ConstantPool.getStringByIndex(nameIndex.getValue());
-                table.setSimpleName(simpleName);
+            U2 nameIndex = U2.read(inputStream);
+            String simpleName = ConstantPool.getStringByIndex(nameIndex.getValue());
+            table.setSimpleName(simpleName);
 
-                U2 descriptorIndex = U2.read(inputStream);
-                String descriptor = ConstantPool.getStringByIndex(descriptorIndex.getValue());
-                table.setDescriptor(descriptor);
+            U2 descriptorIndex = U2.read(inputStream);
+            String descriptor = ConstantPool.getStringByIndex(descriptorIndex.getValue());
+            table.setDescriptor(descriptor);
 
-                // attribute_info
-                U2 attributes = U2.read(inputStream);
-                List<AttributeInfo> attributeList = new ArrayList<>(attributes.getValue());
-                if (attributeList.size() > 0) {
-                    for (int j = 0; j < attributeList.size(); j++) {
-                        U2 attrNameIndex = U2.read(inputStream);
-                        String attrName = ConstantPool.getStringByIndex(attrNameIndex.getValue());
-                        AttributeInfo attributeInfo = AttributeInfo.getAttrByName(attrName);
-                        attributeInfo.readMore(inputStream);
-                        attributeList.add(attributeInfo);
-                    }
-                }
-                table.setAttributeInfoList(attributeList);
+            // attribute_info
+            short attrCount = U2.read(inputStream).getValue();
+            List<AttributeInfo> attributeList = new ArrayList<>(attrCount);
+            for (int j = 0; j < attrCount; j++) {
+                AttributeInfo attrInfo = AttributeInfo.readAttributeInfo(inputStream);
+                attributeList.add(attrInfo);
             }
+            table.setAttributeInfoList(attributeList);
+            fieldInfoArray[i] = table;
         }
-        classInfo.setFieldTableList(fieldList);
+        return fieldInfoArray;
     }
 }

@@ -44,15 +44,20 @@ public abstract class AttributeInfo {
     protected String content;
 
     public abstract void readMore(InputStream inputStream);
+    public abstract String getPrintContent();
 
-    public void read(InputStream inputStream) {
+    public static AttributeInfo readAttributeInfo(InputStream inputStream) {
         short attrNameIndex = U2.read(inputStream).getValue();
-        attributeName = ConstantPool.getStringByIndex(attrNameIndex);
-        attributeLength = U4.read(inputStream).getValue();
-        readMore(inputStream);
+        String attrName = ConstantPool.getStringByIndex(attrNameIndex);
+        int attrLength = U4.read(inputStream).getValue();
+        AttributeInfo attributeInfo = AttributeInfo.getAttrByName(attrName);
+        attributeInfo.setAttributeName(attrName);
+        attributeInfo.setAttributeLength(attrLength);
+        attributeInfo.readMore(inputStream);
+        return attributeInfo;
     }
 
-    public static AttributeInfo getAttrByName(String attrName) {
+    private static AttributeInfo getAttrByName(String attrName) {
         AttributeInfo info;
         switch (attrName) {
             case DEPRECATED:

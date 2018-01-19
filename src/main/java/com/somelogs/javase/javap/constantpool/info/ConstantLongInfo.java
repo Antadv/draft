@@ -21,5 +21,6 @@ public class ConstantLongInfo extends ConstantPoolInfo {
     @Override
     public void read(InputStream inputStream) {
         value = U8.read(inputStream).getValue();
+        content = String.valueOf(value) + "L";
     }
 }

@@ -10,6 +10,10 @@ import java.io.InputStream;
 public class DeprecatedAttrInfo extends AttributeInfo {
 
     @Override
-    public void readMore(InputStream inputStream) {
+    public void readMore(InputStream inputStream) {}
+
+    @Override
+    public String getPrintContent() {
+        return "{type=Deprecated}";
     }
 }

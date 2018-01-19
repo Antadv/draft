@@ -1,6 +1,5 @@
 package com.somelogs.javase.javap.attribute;
 
-import com.somelogs.javase.javap.constantpool.ConstantPool;
 import com.somelogs.javase.javap.datatype.U1;
 import com.somelogs.javase.javap.datatype.U2;
 import com.somelogs.javase.javap.datatype.U4;
@@ -61,14 +60,17 @@ public class CodeAttrInfo extends AttributeInfo {
             exceptionInfoList.add(exceptionInfo);
         }
 
-        U2 attrCountU2 = U2.read(inputStream);
-        attributeInfoList = new ArrayList<>(attrCountU2.getValue());
-        if (attrCountU2.getValue() >0) {
-            String attrName = ConstantPool.getStringByIndex(U2.read(inputStream).getValue());
-            AttributeInfo attrInfo = AttributeInfo.getAttrByName(attrName);
-            attrInfo.readMore(inputStream);
+        short attrCount = U2.read(inputStream).getValue();
+        attributeInfoList = new ArrayList<>(attrCount);
+        for (int i = 0; i < attrCount; i++) {
+            AttributeInfo attrInfo = AttributeInfo.readAttributeInfo(inputStream);
             attributeInfoList.add(attrInfo);
         }
+    }
+
+    @Override
+    public String getPrintContent() {
+        return null;
     }
 
     @Getter

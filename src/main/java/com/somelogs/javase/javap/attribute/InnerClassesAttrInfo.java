@@ -37,6 +37,11 @@ public class InnerClassesAttrInfo extends AttributeInfo {
         }
     }
 
+    @Override
+    public String getPrintContent() {
+        return null;
+    }
+
     @Data
     private class InnerClassInfo {
         private String innerClassName;

@@ -3,9 +3,8 @@ package com.somelogs.javase.javap.file;
 import com.somelogs.javase.javap.constantpool.ConstantPool;
 import com.somelogs.javase.javap.datatype.U2;
 import com.somelogs.javase.javap.datatype.U4;
-import com.somelogs.javase.javap.table.FieldTable;
+import com.somelogs.javase.javap.table.FieldInfo;
 import lombok.Data;
-import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
 
@@ -25,28 +24,27 @@ public class ClassInfo {
     private String accessFlags;
     private String classFullyQualifiedName;
     private String superClassFullyQualifiedName;
-    private int interfaceCount;
     private List<String> interfaceList;
-    private List<FieldTable> fieldTableList;
+    private FieldInfo[] fieldInfoArray;
 
     public void print() {
         StringBuilder sb = new StringBuilder();
         sb.append("magic: ").append(magic.getHexValue()).append("\n")
                 .append("minor version: ").append(minorVersion.getValue()).append("\n")
                 .append("major version: ").append(majorVersion.getValue()).append("\n")
+                .append("Access flags: ").append(accessFlags).append("\n").append("\n")
                 .append("Constant pool:").append("\n")
-                .append("Access flags: ").append(accessFlags).append("\n")
                 .append(cpInfo.getContent()).append("\n")
                 .append("Class FQN: ").append(classFullyQualifiedName).append("\n")
-                .append("Super class FQN: ").append(superClassFullyQualifiedName).append("\n");
+                .append("Super class FQN: ").append(superClassFullyQualifiedName).append("\n").append("\n");
 
-        sb.append("Interfaces: ").append(interfaceCount);
+        sb.append("Interfaces: ").append(interfaceList.size()).append("\n");
         for (String interfaceName : interfaceList) {
-            sb.append(interfaceName).append("\n");
+            sb.append(interfaceName).append("\n").append("\n");
         }
-        sb.append("Fields Count: ").append(fieldTableList.size()).append("\n");
-        if (CollectionUtils.isNotEmpty(fieldTableList)) {
-            sb.append("Field Table:").append("\n").append(fieldTableList).append("\n");
+        sb.append("Fields Count: ").append(fieldInfoArray.length).append("\n");
+        for (FieldInfo info : fieldInfoArray) {
+            sb.append(info.toString()).append("\n");
         }
         System.out.println(sb.toString());
     }

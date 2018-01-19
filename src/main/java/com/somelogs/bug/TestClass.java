@@ -16,8 +16,7 @@ public class TestClass implements Serializable {
 
     private int m;
 
-    public int add()
-    {
+    public int add() throws IllegalArgumentException, NullPointerException {
         return this.m + 1;
     }
 }

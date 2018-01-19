@@ -70,16 +70,46 @@ public class CodeAttrInfo extends AttributeInfo {
 
     @Override
     public String getPrintContent() {
-        return null;
+        StringBuilder sb = new StringBuilder();
+        sb.append("{type=Code, ")
+            .append("maxStack=").append(maxStack)
+            .append(", maxLocals=").append(maxLocals)
+            .append(", codeLength=").append(codeLength);
+
+        sb.append(", opcodes=[");
+        for (String opcode : opcodes) {
+            sb.append(opcode).append(", ");
+        }
+        sb.delete(sb.length() - 2, sb.length());
+        sb.append("], ");
+        sb.append("exceptions=[");
+        for (ExceptionInfo info : exceptionInfoList) {
+            sb.append(info.toString());
+        }
+        sb.append("], ");
+        sb.append("attribute=[");
+        for (AttributeInfo info : attributeInfoList) {
+            sb.append(info.getPrintContent()).append(", ");
+        }
+        sb.delete(sb.length() - 2, sb.length());
+        sb.append("]}");
+        return sb.toString();
     }
 
     @Getter
     @Setter
-    @ToString
     private class ExceptionInfo {
         private int start;
         private int end;
         private int handler;
         private int type;
+
+        @Override
+        public String toString() {
+            return "{start=" + start + ", " +
+                    "end=" + end + ", " +
+                    "handler=" + handler + ", " +
+                    "type=" + type + "}";
+        }
     }
 }

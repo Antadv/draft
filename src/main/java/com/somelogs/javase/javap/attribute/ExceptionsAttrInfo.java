@@ -37,11 +37,12 @@ public class ExceptionsAttrInfo extends AttributeInfo {
     @Override
     public String getPrintContent() {
         StringBuilder sb = new StringBuilder();
-        sb.append("{type=Exceptions");
+        sb.append("{type=Exceptions, exceptions=[");
         for (ExceptionIndexTable exp : exceptionTable) {
-            sb.append(", exceptions=").append(exp).append(", ");
+            sb.append(exp).append(", ");
         }
-        sb.append("}");
+        sb.delete(sb.length() - 2, sb.length());
+        sb.append("]}");
         return sb.toString();
     }
 

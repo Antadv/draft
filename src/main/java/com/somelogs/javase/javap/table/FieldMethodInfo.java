@@ -7,13 +7,13 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * field table
+ * field table Or Method table
  *
  * @author LBG - 2018/1/17 0017
  */
 @Setter
 @Getter
-public class FieldInfo {
+public class FieldMethodInfo {
 
     private String accessFlag;
     private String simpleName;
@@ -30,11 +30,9 @@ public class FieldInfo {
             .append("\n");
 
         for (AttributeInfo info : attributeInfoList) {
-            sb.append("attribute[")
-                .append(info.getPrintContent())
-                .append("]")
-                .append("\n");
+            sb.append("\t").append(info.getPrintContent()).append("\n");
         }
+        sb.deleteCharAt(sb.length() -1);
         return sb.toString();
     }
 }

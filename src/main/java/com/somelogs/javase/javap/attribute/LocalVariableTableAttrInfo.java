@@ -2,7 +2,6 @@ package com.somelogs.javase.javap.attribute;
 
 import com.somelogs.javase.javap.constantpool.ConstantPool;
 import com.somelogs.javase.javap.datatype.U2;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,15 +40,34 @@ public class LocalVariableTableAttrInfo extends AttributeInfo {
 
     @Override
     public String getPrintContent() {
-        return null;
+        StringBuilder sb = new StringBuilder();
+        sb.append("{type=LocalVariableTable, LocalVariableInfo=[");
+        for (LocalVariableInfo info : variableInfoList) {
+            sb.append(info.toString()).append(", ");
+        }
+        if (variableInfoList.size() > 0) {
+            sb.delete(sb.length() - 2, sb.length());
+        }
+        sb.append("]}");
+        return sb.toString();
     }
 
-    @Data
+    @Setter
+    @Getter
     private class LocalVariableInfo {
         private int start;
         private int length;
         private String name;
         private String descriptor;
         private int index;
+
+        @Override
+        public String toString() {
+            return "{start=" + start + ", " +
+                    "length=" + length + ", " +
+                    "name=" + name + ", " +
+                    "descriptor=" + descriptor + ", " +
+                    "index=" + index + "}";
+        }
     }
 }

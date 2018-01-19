@@ -40,8 +40,9 @@ public class LineNumberTableAttrInfo extends AttributeInfo {
         StringBuilder sb = new StringBuilder();
         sb.append("{type=LineNumberTable, table=[");
         for (LineNumberInfo info : lineNumberInfoList) {
-            sb.append(info).append(", ");
+            sb.append(info).append(",");
         }
+        sb.deleteCharAt(sb.length() - 1);
         sb.append("]}");
         return sb.toString();
     }

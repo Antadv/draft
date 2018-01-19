@@ -3,12 +3,13 @@ package com.somelogs.javase.javap;
 import com.somelogs.javase.javap.accessflag.AccessFlag;
 import com.somelogs.javase.javap.accessflag.ClassAccessFlag;
 import com.somelogs.javase.javap.accessflag.FieldAccessFlag;
+import com.somelogs.javase.javap.accessflag.MethodAccessFlag;
 import com.somelogs.javase.javap.attribute.AttributeInfo;
 import com.somelogs.javase.javap.constantpool.ConstantPool;
 import com.somelogs.javase.javap.datatype.U2;
 import com.somelogs.javase.javap.datatype.U4;
 import com.somelogs.javase.javap.file.ClassInfo;
-import com.somelogs.javase.javap.table.FieldInfo;
+import com.somelogs.javase.javap.table.FieldMethodInfo;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -67,18 +68,43 @@ public class ClassAnalyzer {
         classInfo.setInterfaceList(interfaceList);
 
         // field_info
-        FieldInfo[] fieldInfoArray = readFieldInfo(inputStream);
-        classInfo.setFieldInfoArray(fieldInfoArray);
+        FieldMethodInfo[] fieldTable = readFieldOrMethodTable(inputStream, 1);
+        classInfo.setFieldTable(fieldTable);
+
+        // method_info
+        FieldMethodInfo[] methodTable = readFieldOrMethodTable(inputStream, 2);
+        classInfo.setMethodTable(methodTable);
+
+        // attribute_info
+        short attrCount = U2.read(inputStream).getValue();
+        AttributeInfo[] attrTable = new AttributeInfo[attrCount];
+        for (int j = 0; j < attrCount; j++) {
+            AttributeInfo attrInfo = AttributeInfo.readAttributeInfo(inputStream);
+            attrTable[j] = attrInfo;
+        }
+        classInfo.setAttrTable(attrTable);
 
         return classInfo;
     }
 
-    private static FieldInfo[] readFieldInfo(InputStream inputStream) {
+    /**
+     * read field or method table
+     *
+     * @param inputStream {@link InputStream}
+     * @param type 1 field, 2 method.
+     * @return table
+     */
+    private static FieldMethodInfo[] readFieldOrMethodTable(InputStream inputStream, int type) {
         short fieldCount = U2.read(inputStream).getValue();
-        FieldInfo[] fieldInfoArray = new FieldInfo[fieldCount];
+        FieldMethodInfo[] fieldMethodInfoArray = new FieldMethodInfo[fieldCount];
         for (int i = 0; i < fieldCount; i++) {
-            FieldInfo table = new FieldInfo();
-            AccessFlag accessFlag = new FieldAccessFlag();
+            FieldMethodInfo table = new FieldMethodInfo();
+            AccessFlag accessFlag;
+            if (type == 1) {
+                accessFlag = new FieldAccessFlag();
+            } else {
+                accessFlag = new MethodAccessFlag();
+            }
             U2 accessFlagU2 = U2.read(inputStream);
             String flagDesc = accessFlag.getAccessFlags(accessFlagU2.getValue());
             table.setAccessFlag(flagDesc);
@@ -99,8 +125,8 @@ public class ClassAnalyzer {
                 attributeList.add(attrInfo);
             }
             table.setAttributeInfoList(attributeList);
-            fieldInfoArray[i] = table;
+            fieldMethodInfoArray[i] = table;
         }
-        return fieldInfoArray;
+        return fieldMethodInfoArray;
     }
 }

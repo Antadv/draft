@@ -1,9 +1,10 @@
 package com.somelogs.javase.javap.file;
 
+import com.somelogs.javase.javap.attribute.AttributeInfo;
 import com.somelogs.javase.javap.constantpool.ConstantPool;
 import com.somelogs.javase.javap.datatype.U2;
 import com.somelogs.javase.javap.datatype.U4;
-import com.somelogs.javase.javap.table.FieldInfo;
+import com.somelogs.javase.javap.table.FieldMethodInfo;
 import lombok.Data;
 
 import java.util.List;
@@ -25,7 +26,9 @@ public class ClassInfo {
     private String classFullyQualifiedName;
     private String superClassFullyQualifiedName;
     private List<String> interfaceList;
-    private FieldInfo[] fieldInfoArray;
+    private FieldMethodInfo[] fieldTable;
+    private FieldMethodInfo[] methodTable;
+    private AttributeInfo[] attrTable;
 
     public void print() {
         StringBuilder sb = new StringBuilder();
@@ -42,9 +45,17 @@ public class ClassInfo {
         for (String interfaceName : interfaceList) {
             sb.append(interfaceName).append("\n").append("\n");
         }
-        sb.append("Fields Count: ").append(fieldInfoArray.length).append("\n");
-        for (FieldInfo info : fieldInfoArray) {
+        sb.append("Fields Count: ").append(fieldTable.length).append("\n");
+        for (FieldMethodInfo info : fieldTable) {
             sb.append(info.toString()).append("\n");
+        }
+        sb.append("\n").append("Method Count: ").append(methodTable.length).append("\n");
+        for (FieldMethodInfo info : methodTable) {
+            sb.append(info.toString()).append("\n");
+        }
+        sb.append("\n").append("Attribute Count: ").append(attrTable.length).append("\n");
+        for (AttributeInfo info : attrTable) {
+            sb.append(info.getPrintContent()).append("\n");
         }
         System.out.println(sb.toString());
     }

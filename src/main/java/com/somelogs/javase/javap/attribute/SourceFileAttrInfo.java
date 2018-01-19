@@ -25,6 +25,6 @@ public class SourceFileAttrInfo extends AttributeInfo {
 
     @Override
     public String getPrintContent() {
-        return null;
+        return "{type=SourceFile, fileName=" + sourceFileName + "}";
     }
 }

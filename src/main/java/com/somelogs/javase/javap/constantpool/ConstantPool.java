@@ -1,11 +1,12 @@
 package com.somelogs.javase.javap.constantpool;
 
 import com.somelogs.javase.javap.constantpool.info.*;
-import com.somelogs.javase.javap.datatype.U1;
 import lombok.Data;
 
-import java.io.InputStream;
-import java.util.*;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * constant pool
@@ -43,16 +44,16 @@ public class ConstantPool {
         return builder.toString();
     }
 
-    public void analyze(InputStream inputStream) {
+    public void analyze(DataInputStream inputStream) throws IOException {
         addCpInfo2Map(inputStream);
         parseIndexWithConstant();
         parseIndexWithRef();
     }
 
-    private void addCpInfo2Map(InputStream inputStream) {
+    private void addCpInfo2Map(DataInputStream inputStream) throws IOException {
         int i = 1;
         while (i <= cpCount) {
-            byte tag = U1.read(inputStream).getValue();
+            byte tag = inputStream.readByte();
             ConstantPoolInfo info = ConstantPoolInfo.getCpInfoByTag(tag);
             info.setTag(tag);
             info.read(inputStream);

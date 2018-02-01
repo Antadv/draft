@@ -3,8 +3,8 @@ package com.somelogs.javase.javap;
 import com.somelogs.javase.javap.file.ClassInfo;
 import org.junit.Test;
 
+import java.io.DataInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
@@ -15,9 +15,19 @@ import java.io.InputStream;
 public class ClassTest {
 
     @Test
-    public void test() throws FileNotFoundException {
+    public void test() throws Exception {
         InputStream input = new FileInputStream("C:/Users/Administrator/Desktop/TestClass.class");
-        ClassInfo classInfo = ClassAnalyzer.analyze(input);
+
+        DataInputStream inputStream = new DataInputStream(input);
+        ClassInfo classInfo = ClassAnalyzer.analyze(inputStream);
+        classInfo.print();
+    }
+
+    @Test
+    public void testByDataInputStream() throws Exception {
+        InputStream input = new FileInputStream("C:/Users/Administrator/Desktop/TestClass.class");
+        DataInputStream inputStream = new DataInputStream(input);
+        ClassInfo classInfo = ClassDataAnalyzer.analyze(inputStream);
         classInfo.print();
     }
 }

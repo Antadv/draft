@@ -1,10 +1,11 @@
 package com.somelogs.javase.javap.constantpool.info;
 
 import com.somelogs.javase.javap.constantpool.ConstantPoolInfo;
-import com.somelogs.javase.javap.datatype.U4;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -21,9 +22,12 @@ public class ConstantDoubleInfo extends ConstantPoolInfo {
 
     @Override
     public void read(InputStream inputStream) {
-        highValue = U4.read(inputStream).getValue();
-        lowValue = U4.read(inputStream).getValue();
-        // TODO 解析 Double
-        // content = ?
+        DataInputStream dataInput = new DataInputStream(inputStream);
+        try {
+            double value = dataInput.readDouble();
+            content = String.valueOf(value);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

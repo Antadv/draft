@@ -13,59 +13,51 @@ import com.somelogs.javase.javap.table.FieldMethodInfo;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * class analyze
+ * class file analyzer via DataInputStream
  *
- * @author LBG - 2018/1/15 0015
+ * @author LBG - 2018/1/30 0030
  */
-public class ClassAnalyzer {
-
-    private ClassAnalyzer() {}
+public class ClassDataAnalyzer {
 
     public static ClassInfo analyze(DataInputStream inputStream) throws IOException {
         ClassInfo classInfo = new ClassInfo();
 
         // magic
-        U4 magic = U4.read(inputStream);
-        classInfo.setMagic(magic);
+        int magic = inputStream.readInt();
+        classInfo.setMagic(new U4(magic));
 
         // version
-        U2 minorVersion = U2.read(inputStream);
-        U2 majorVersion = U2.read(inputStream);
-        classInfo.setMinorVersion(minorVersion);
-        classInfo.setMajorVersion(majorVersion);
+        classInfo.setMinorVersion(new U2(inputStream.readShort()));
+        classInfo.setMajorVersion(new U2(inputStream.readShort()));
 
         // constant_pool_count
-        U2 cpCount = U2.read(inputStream);
-        classInfo.setConstantPoolCount(cpCount);
+        short cpCount = inputStream.readShort();
+        classInfo.setConstantPoolCount(new U2(cpCount));
 
         // constant_pool
-        ConstantPool constantPool = new ConstantPool(cpCount.getValue() - 1);
+        ConstantPool constantPool = new ConstantPool(cpCount - 1);
         constantPool.analyze(inputStream);
         classInfo.setCpInfo(constantPool);
 
         // access_flag
-        U2 classAccessFlag = U2.read(inputStream);
-        classInfo.setAccessFlags(new ClassAccessFlag().getAccessFlags(classAccessFlag.getValue()));
+        short classAccessFlag = inputStream.readShort();
+        classInfo.setAccessFlags(new ClassAccessFlag().getAccessFlags(classAccessFlag));
 
         // class_index, super_class_index
-        U2 classIndex = U2.read(inputStream);
-        U2 superClassIndex = U2.read(inputStream);
-        String classFQN = ConstantPool.getStringByIndex(classIndex.getValue());
-        String superFQN = ConstantPool.getStringByIndex(superClassIndex.getValue());
+        String classFQN = ConstantPool.getStringByIndex(inputStream.readShort());
+        String superFQN = ConstantPool.getStringByIndex(inputStream.readShort());
         classInfo.setClassFullyQualifiedName(classFQN);
         classInfo.setSuperClassFullyQualifiedName(superFQN);
 
         // interface list
-        short interfaces = U2.read(inputStream).getValue();
+        short interfaces = inputStream.readShort();
         List<String> interfaceList = new ArrayList<>(interfaces);
         for (int i = 0; i < interfaces; i++) {
-            U2 interfaceRef = U2.read(inputStream);
-            interfaceList.add(ConstantPool.getStringByIndex(interfaceRef.getValue()));
+            interfaceList.add(ConstantPool.getStringByIndex(inputStream.readShort()));
         }
         classInfo.setInterfaceList(interfaceList);
 
@@ -78,7 +70,7 @@ public class ClassAnalyzer {
         classInfo.setMethodTable(methodTable);
 
         // attribute_info
-        short attrCount = U2.read(inputStream).getValue();
+        short attrCount = inputStream.readShort();
         AttributeInfo[] attrTable = new AttributeInfo[attrCount];
         for (int j = 0; j < attrCount; j++) {
             AttributeInfo attrInfo = AttributeInfo.readAttributeInfo(inputStream);
@@ -92,12 +84,12 @@ public class ClassAnalyzer {
     /**
      * read field or method table
      *
-     * @param inputStream {@link InputStream}
+     * @param inputStream {@link DataInputStream}
      * @param type 1 field, 2 method.
      * @return table
      */
-    private static FieldMethodInfo[] readFieldOrMethodTable(InputStream inputStream, int type) {
-        short fieldCount = U2.read(inputStream).getValue();
+    private static FieldMethodInfo[] readFieldOrMethodTable(DataInputStream inputStream, int type) throws IOException {
+        short fieldCount = inputStream.readShort();
         FieldMethodInfo[] fieldMethodInfoArray = new FieldMethodInfo[fieldCount];
         for (int i = 0; i < fieldCount; i++) {
             FieldMethodInfo table = new FieldMethodInfo();
@@ -107,20 +99,17 @@ public class ClassAnalyzer {
             } else {
                 accessFlag = new MethodAccessFlag();
             }
-            U2 accessFlagU2 = U2.read(inputStream);
-            String flagDesc = accessFlag.getAccessFlags(accessFlagU2.getValue());
+            String flagDesc = accessFlag.getAccessFlags(inputStream.readShort());
             table.setAccessFlag(flagDesc);
 
-            U2 nameIndex = U2.read(inputStream);
-            String simpleName = ConstantPool.getStringByIndex(nameIndex.getValue());
+            String simpleName = ConstantPool.getStringByIndex(inputStream.readShort());
             table.setSimpleName(simpleName);
 
-            U2 descriptorIndex = U2.read(inputStream);
-            String descriptor = ConstantPool.getStringByIndex(descriptorIndex.getValue());
+            String descriptor = ConstantPool.getStringByIndex(inputStream.readShort());
             table.setDescriptor(descriptor);
 
             // attribute_info
-            short attrCount = U2.read(inputStream).getValue();
+            short attrCount = inputStream.readShort();
             List<AttributeInfo> attributeList = new ArrayList<>(attrCount);
             for (int j = 0; j < attrCount; j++) {
                 AttributeInfo attrInfo = AttributeInfo.readAttributeInfo(inputStream);

@@ -2,10 +2,9 @@ package com.somelogs.javase;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Iterator#remove()
@@ -93,7 +92,15 @@ public class IteratorRemove {
         int cursor;
         System.out.println(strings[cursor = index]);
         System.out.println(cursor);
+    }
 
-
+    @Test
+    public void systemTimeTest() throws Exception {
+        int hour = 60 * 60 * 1000;
+        System.out.println(System.currentTimeMillis() / hour);
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH");
+        Date date = format.parse("2018-08-09 09");
+        System.out.println(date.getTime() / hour);
+        System.out.println(new Date());
     }
 }

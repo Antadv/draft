@@ -10,17 +10,13 @@ import java.util.concurrent.TimeUnit;
 public class ApplicationDemo {
 
     public static void main(String[] args) throws InterruptedException {
-        int a = 0;
-        int b = 0;
-        while (true) {
-            System.out.println("result:" + add(a, b));
-            a++;
-            b++;
-            TimeUnit.SECONDS.sleep(2);
-        }
+        TimeUnit.SECONDS.sleep(15);
+        add(1, 2);
     }
 
-    public static int add(int a, int b) {
-        return a + b;
+    public static void add(int a, int b) {
+        System.out.println(1/0);
+        System.out.println("a=" + a);
+        System.out.println("b=" + b);
     }
 }

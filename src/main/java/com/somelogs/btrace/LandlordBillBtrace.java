@@ -1,6 +1,5 @@
 package com.somelogs.btrace;
 
-import com.sun.btrace.AnyType;
 import com.sun.btrace.BTraceUtils;
 import com.sun.btrace.annotations.*;
 
@@ -9,14 +8,14 @@ import com.sun.btrace.annotations.*;
  *
  * @author LBG - 2018/9/28 0028
  */
-@BTrace
+@BTrace(unsafe = true)
 public class LandlordBillBtrace {
 
     @OnMethod(clazz = "com.manyi.fdb.contractbill.soa.domainservice.service.impl.RenterBillServiceDomainImpl",
-              method = "postProcessBillResult", location=@Location(Kind.RETURN))
-    public static void billList(AnyType[] args, @Duration long time, @Return AnyType anyType) {
-        BTraceUtils.printArray(args);
+              method = "listAllBill4Landlord",
+              location=@Location(Kind.RETURN))
+    public static void billList(@Duration long time) {
         BTraceUtils.println(time);
-        BTraceUtils.println(anyType);
+        BTraceUtils.println("======================");
     }
 }

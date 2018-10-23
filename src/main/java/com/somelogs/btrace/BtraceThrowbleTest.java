@@ -13,24 +13,6 @@ import static com.sun.btrace.BTraceUtils.println;
 @BTrace
 public class BtraceThrowbleTest {
 
-    //@OnMethod(clazz = "com.somelogs.btrace.ApplicationDemo", method = "add", location=@Location(Kind.ENTRY))
-    //public static void onThreadStart(@ProbeClassName String className,
-    //                                 @ProbeMethodName String methodName,
-    //                                 AnyType[] args,
-    //                                 @Return int result,
-    //                                 @Duration long time) {
-    //
-    //    println("=============");
-    //    println("className=" + className);
-    //    println("methodName=" + methodName);
-    //    println("method cost time=" + time);
-    //    //BTraceUtils.printArray(args);
-    //    //BTraceUtils.println("result=" + result);
-    //
-    //    BTraceUtils.jstack();
-    //    //BTraceUtils.println(exception);
-    //}
-
     @TLS static Throwable currentException;
 
     // introduce probe into every constructor of java.lang.Throwable

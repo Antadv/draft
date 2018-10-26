@@ -1,4 +1,4 @@
-package com.somelogs.javase.Integer;
+package com.somelogs.javase.integer;
 
 import java.util.Objects;
 
@@ -25,5 +25,11 @@ public class IntegerEqualsDemo {
         //System.out.println(e == f); // exp
         //System.out.println(e.equals(f)); // exp
         System.out.println(Objects.equals(e, f)); // false
+
+        Integer g = new Integer(3);
+        Integer h = new Integer(3);
+        Integer i = 3;
+        System.out.println(g == h); // false
+        System.out.println(g == i); // false
     }
 }

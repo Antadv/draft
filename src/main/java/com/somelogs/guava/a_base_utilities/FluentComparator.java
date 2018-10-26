@@ -19,7 +19,7 @@ public class FluentComparator {
     @Test
     public void natural() {
         Ordering<Integer> ordering = Ordering.natural();
-        //Set<Integer> set = new TreeSet<>(ordering);
+        //Set<integer> set = new TreeSet<>(ordering);
         Set<Integer> set = new TreeSet<>();
         set.add(7);
         set.add(5);

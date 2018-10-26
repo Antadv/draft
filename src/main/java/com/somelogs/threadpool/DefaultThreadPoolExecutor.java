@@ -51,7 +51,7 @@ public class DefaultThreadPoolExecutor {
      * newCachedThreadPool
      *
      * corePoolSize = 0
-     * maximumPoolSize = Integer.MAX_VALUE
+     * maximumPoolSize = integer.MAX_VALUE
      * keepAliveTime = 60s
      * SynchronousQueue<Runnable>
      *     SynchronousQueue 不是一个真正的队列，而是一种在线程之间进行移交的机制

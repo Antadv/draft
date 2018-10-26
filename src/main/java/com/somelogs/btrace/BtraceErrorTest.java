@@ -1,6 +1,5 @@
 package com.somelogs.btrace;
 
-import com.sun.btrace.BTraceUtils;
 import com.sun.btrace.annotations.BTrace;
 import com.sun.btrace.annotations.Kind;
 import com.sun.btrace.annotations.Location;
@@ -16,9 +15,8 @@ public class BtraceErrorTest {
 
     @OnMethod(
             clazz = "com.somelogs.btrace.ApplicationDemo",
-            method = "add",
-            location = @Location(Kind.ERROR))
-    public static void onError(Throwable throwable) {
-        BTraceUtils.Threads.jstack(throwable);
+            method = "test",
+            location = @Location(Kind.RETURN))
+    public static void onError() {
     }
 }

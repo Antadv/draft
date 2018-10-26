@@ -8,7 +8,7 @@ package com.somelogs.javase.javap.constantpool;
 public enum ConstantTypeEnum {
 
     UTF8(1, "Utf8"),
-    INTEGER(3, "Integer"),
+    INTEGER(3, "integer"),
     FLOAT(4, "Float"),
     LONG(5, "Long"),
     DOUBLE(6, "Double"),

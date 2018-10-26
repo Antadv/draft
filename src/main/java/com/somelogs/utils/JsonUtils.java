@@ -1,6 +1,8 @@
 package com.somelogs.utils;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
@@ -15,7 +17,12 @@ public class JsonUtils {
 
     private JsonUtils() {}
 
-    private static ObjectMapper mapper = new ObjectMapper();
+    private static ObjectMapper mapper;
+    static {
+        mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
 
 
     /**********************Serialize**********************/

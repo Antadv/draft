@@ -14,12 +14,12 @@ import java.util.concurrent.CountDownLatch;
  *
  * @author LBG - 2018/11/3 0003
  */
-public class ZookeeperUseSimple implements Watcher {
+public class SessionUseSimple implements Watcher {
 
     private static CountDownLatch connectedSemaphore = new CountDownLatch(1);
 
     public static void main(String[] args) throws IOException {
-        ZooKeeper zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new ZookeeperUseSimple());
+        ZooKeeper zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new SessionUseSimple());
 
         /*
          * Zookeeper 客户端和服务器会话的建立是一个异步的过程，

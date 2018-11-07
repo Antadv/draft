@@ -14,21 +14,21 @@ import java.util.concurrent.CountDownLatch;
  *
  * @author LBG - 2018/11/3 0003
  */
-public class ZookeeperWithSIDAndPwd implements Watcher {
+public class SessionWithSIDAndPwd implements Watcher {
 
     private static CountDownLatch connectedSemaphore = new CountDownLatch(1);
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        ZooKeeper zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new ZookeeperWithSIDAndPwd());
+        ZooKeeper zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new SessionWithSIDAndPwd());
         connectedSemaphore.await();
 
         long sessionId = zooKeeper.getSessionId();
         byte[] pwd = zooKeeper.getSessionPasswd();
 
         // use wrong session id and pwd
-        zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new ZookeeperWithSIDAndPwd(), 2L, "test".getBytes());
+        zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new SessionWithSIDAndPwd(), 2L, "test".getBytes());
         // use correct session id and pwd
-        zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new ZookeeperWithSIDAndPwd(), sessionId, pwd);
+        zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new SessionWithSIDAndPwd(), sessionId, pwd);
 
         Thread.sleep(Integer.MAX_VALUE);
     }

@@ -29,7 +29,7 @@ public class CreateNodeSync implements Watcher {
      * createModel  节点类型，是一个枚举类型 {@link CreateMode}, 有 4 种可选的节点类型
      *              持久（PERSISTENT）
      *              持久顺序（PERSISTENT_SEQUENTIAL）
-     *              临时（EPHEMERAL）
+     *              临时（EPHEMERAL）临时节点不能创建子节点
      *              临时顺序（EPHEMERAL_SEQUENTIAL）
      */
     public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
@@ -41,6 +41,8 @@ public class CreateNodeSync implements Watcher {
 
         String path2 = zooKeeper.create("/zk-test-ephemeral-", "".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
         System.out.println("Success create node: " + path2);
+
+        Thread.sleep(Integer.MAX_VALUE);
     }
 
     @Override

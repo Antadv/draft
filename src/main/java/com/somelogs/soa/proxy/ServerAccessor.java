@@ -37,7 +37,7 @@ public class ServerAccessor implements MethodInterceptor {
             return methodProxy.invokeSuper(o, objects);
         }
         SOARequestURL typeAnnotation = method.getDeclaringClass().getAnnotation(SOARequestURL.class);
-        String postBody = JsonUtils.object2JSONString(objects[0]);
+        String postBody = JsonUtils.writeValueAsString(objects[0]);
         Response response;
         try {
             String requestUrl = SERVER_URL + typeAnnotation.url() + methodAnnotation.url();

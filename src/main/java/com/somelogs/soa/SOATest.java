@@ -49,7 +49,7 @@ public class SOATest {
         /*
          * jackson works well
          */
-        String json = JsonUtils.object2JSONString(list);
+        String json = JsonUtils.writeValueAsString(list);
 
         /*
          * if list add the same object, fast json need disable circular reference

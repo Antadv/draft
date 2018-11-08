@@ -1,5 +1,6 @@
 package com.somelogs.ssq;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.somelogs.utils.JsonUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.util.Assert;
@@ -39,7 +40,7 @@ public class SSQCount {
         Assert.notNull(resource);
         try {
             String jsonStr = FileUtils.readFileToString(new File(resource.getFile()));
-            return JsonUtils.readValue(jsonStr, SSQResponse.class);
+            return JsonUtils.readValue(jsonStr, new TypeReference<SSQResponse>() {});
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

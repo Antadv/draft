@@ -30,10 +30,9 @@ public class JsonUtils {
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 
+    /********************** Serialize **********************/
 
-    /**********************Serialize**********************/
-
-    public static String object2JSONString(Object obj) {
+    public static String writeValueAsString(Object obj) {
         try {
             return mapper.writeValueAsString(obj);
         } catch (Exception e) {
@@ -41,18 +40,11 @@ public class JsonUtils {
         }
     }
 
+    /********************** Deserialize **********************/
 
-    /**********************Deserialize**********************/
-
-    @Deprecated
-    public static <T> T readValue(String json, Class<T> clazz) {
-        try {
-            return mapper.readValue(json, clazz);
-        } catch (Exception e) {
-            throw new RuntimeException("Deserialize from JSON failed.", e);
-        }
-    }
-
+    /**
+     * 用于具体泛型 readValue(json, new TypeReference<Map<String, Integer>>)
+     */
     public static <T> T readValue(String json, TypeReference<T> typeReference) {
         try {
             return mapper.readValue(json, typeReference);
@@ -61,6 +53,9 @@ public class JsonUtils {
         }
     }
 
+    /**
+     * 用于泛型，反射时 method.getGenericReturnType()
+     */
     public static <T>T readValue(String json, Type genericType) {
         try {
             return mapper.readValue(json, TypeFactory.defaultInstance().constructType(genericType));

@@ -41,7 +41,7 @@ public class SessionUseSimple implements Watcher {
 
     @Override
     public void process(WatchedEvent event) {
-        System.out.println("Receive watched event:" + JsonUtils.object2JSONString(event));
+        System.out.println("Receive watched event:" + JsonUtils.writeValueAsString(event));
         if (Objects.equals(Event.KeeperState.SyncConnected, event.getState())) {
             connectedSemaphore.countDown();
         }

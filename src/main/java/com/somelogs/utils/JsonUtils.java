@@ -22,15 +22,13 @@ public class JsonUtils {
     private static ObjectMapper mapper;
     static {
         mapper = new ObjectMapper();
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE);
         mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
         // disabled features:
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
-
-    /********************** Serialize **********************/
 
     public static String writeValueAsString(Object obj) {
         try {
@@ -39,8 +37,6 @@ public class JsonUtils {
             throw new RuntimeException("Serialize Object to JSON failed" , e);
         }
     }
-
-    /********************** Deserialize **********************/
 
     /**
      * 用于具体泛型 readValue(json, new TypeReference<Map<String, Integer>>)
@@ -63,5 +59,4 @@ public class JsonUtils {
             throw new RuntimeException("Deserialize from JSON failed.", e);
         }
     }
-
 }

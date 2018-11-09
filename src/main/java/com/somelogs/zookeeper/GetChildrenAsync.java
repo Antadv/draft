@@ -12,13 +12,13 @@ import java.util.concurrent.CountDownLatch;
  *
  * @author LBG - 2018/11/7 0007
  */
-public class GetChildrenAsyn implements Watcher {
+public class GetChildrenAsync implements Watcher {
 
     private static CountDownLatch connectedSemaphore = new CountDownLatch(1);
     private static ZooKeeper zooKeeper = null;
 
     public static void main(String[] args) throws Exception {
-        zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new GetChildrenAsyn());
+        zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new GetChildrenAsync());
         connectedSemaphore.await();
 
         String path = "/zk-book";

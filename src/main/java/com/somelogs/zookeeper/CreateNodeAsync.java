@@ -11,12 +11,12 @@ import java.util.concurrent.CountDownLatch;
  *
  * @author LBG - 2018/11/3 0003
  */
-public class CreateNodeAsyn implements Watcher {
+public class CreateNodeAsync implements Watcher {
 
     private static CountDownLatch connectedSemaphore = new CountDownLatch(1);
 
     public static void main(String[] args) throws Exception {
-        ZooKeeper zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new CreateNodeAsyn());
+        ZooKeeper zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new CreateNodeAsync());
         connectedSemaphore.await();
 
         zooKeeper.create("/zk-test-ephemeral-", "".getBytes(),

@@ -1,4 +1,4 @@
-package com.somelogs.zookeeper.curator;
+package com.somelogs.zookeeper.curator.api;
 
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
@@ -6,7 +6,7 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 
 /**
- * 描述
+ * 使用 curator 创建会话
  *
  * @author LBG - 2018/11/9 0009
  */

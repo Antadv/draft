@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class TestClass implements Serializable {
 
+    private static final long serialVersionUID = -4844427008339901477L;
+    
     public static final String HELLO = "hello";
     public static int A = 232;
     public static final double B = 3.2;

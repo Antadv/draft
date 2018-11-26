@@ -2,6 +2,8 @@ package com.somelogs.proxy;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 描述
  * Created by liubingguang on 2017/5/26.
@@ -11,4 +13,6 @@ public class User {
 
     private Integer id;
     private String name;
+    private List<String> hobbyList;
+    private List<User> userList;
 }

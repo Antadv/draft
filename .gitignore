@@ -1,4 +1,71 @@
-target/
+# Eclipse project files
+.project
+.classpath
+.settings
+
+# vs code
+.analysis
+
+# IntelliJ IDEA project files and directories
 *.iml
-.idea
-java_pid*/
+*.ipr
+*.iws
+.idea/
+
+# Geany project file
+.geany
+
+# KDevelop project file and directory
+.kdev4/
+*.kdev4
+
+# Build targets
+/target
+*/target
+
+# log
+/logs
+*/logs
+
+# Report directories
+/reports
+*/reports
+
+# Mac-specific directory that no other operating system needs.
+.DS_Store
+
+# JVM crash logs
+hs_err_pid*.log
+
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+*/*.iml
+*/*/*.iml
+*/target/
+*/target/*
+*/*/target/
+*/*/target/*

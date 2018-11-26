@@ -1,4 +1,4 @@
-package bug;
+package com.somelogs.bug;
 
 import org.apache.commons.io.FileUtils;
 

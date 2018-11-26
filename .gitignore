@@ -5,6 +5,11 @@
 
 # vs code
 .analysis
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
 # IntelliJ IDEA project files and directories
 *.iml

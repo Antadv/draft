@@ -1,4 +1,4 @@
-package cglib;
+package com.somelogs.cglib;
 
 import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.CallbackFilter;

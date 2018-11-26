@@ -1,4 +1,4 @@
-package cglib;
+package com.somelogs.cglib;
 
 /**
  * 描述

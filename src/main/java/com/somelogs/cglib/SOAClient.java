@@ -1,7 +1,7 @@
-package cglib;
+package com.somelogs.cglib;
 
-import cglib.service.TestAService;
-import cglib.service.TestBService;
+import com.somelogs.cglib.service.TestAService;
+import com.somelogs.cglib.service.TestBService;
 
 /**
  * 描述

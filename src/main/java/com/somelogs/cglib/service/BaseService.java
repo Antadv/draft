@@ -1,4 +1,4 @@
-package cglib.service;
+package com.somelogs.cglib.service;
 
 /**
  * 描述

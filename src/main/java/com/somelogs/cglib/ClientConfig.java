@@ -1,4 +1,4 @@
-package cglib;
+package com.somelogs.cglib;
 
 import lombok.Data;
 

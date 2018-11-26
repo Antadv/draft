@@ -1,4 +1,4 @@
-package cas;
+package com.somelogs.cas;
 
 /**
  * 描述

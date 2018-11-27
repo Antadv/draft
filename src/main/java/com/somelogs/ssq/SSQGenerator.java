@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author LBG - 2018/10/26 0026
  */
-public class SSQGenerate {
+public class SSQGenerator {
 
     private static List<String> redFullList = new ArrayList<>(33);
     private static List<String> blueFullList = new ArrayList<>(16);

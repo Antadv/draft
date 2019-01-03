@@ -5,6 +5,7 @@ import java.util.Map;
 
 /**
  * 覆写 removeEldestEntry，实现缓存的效果
+ *
  * @author LBG - 2017/10/13 0013
  */
 public class CacheLinkedHashMap<K, V> extends LinkedHashMap<K, V> {

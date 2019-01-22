@@ -5,7 +5,7 @@ package com.somelogs.algorithm;
  * 自平衡查找树中的2-3查找树，这种数据结构在插入之后能够进行自平衡操作，
  * 从而保证了树的高度在一定的范围内进而能够保证最坏情况下的时间复杂度。
  * 但是2-3查找树实现起来比较困难，红黑树是2-3树的一种简单高效的实现，
- * 他巧妙地使用颜色标记来替代2-3树中比较难处理的3-node节点问题
+ * 他巧妙地使用颜色标记来替代2-3树中比较难处理的3-node节点问题。
  *
  * 参考<a href = 'https://www.cnblogs.com/yangecnu/p/Introduce-Red-Black-Tree.html'></a>
  *

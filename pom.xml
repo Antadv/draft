@@ -23,7 +23,7 @@
 
     <profiles>
         <profile>
-            <id>test</id>
+            <id>local</id>
             <properties>
                 <env>conf/local</env>
             </properties>
@@ -278,16 +278,34 @@
     </dependencies>
 
     <build>
+        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
-            <!-- intellij idea, src config file cannot be moved to src when compiled -->
             <resource>
-                <directory>src/main/java</directory>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
                 <includes>
-                    <include>**/*.properties</include>
-                    <include>**/*.xml</include>
+                    <include>*.xml</include>
+                    <include>spring/*</include>
+                    <include>mybatis/**/*</include>
+                    <include>velocity/*</include>
                 </includes>
-                <filtering>false</filtering>
+                <excludes>
+                    <exclude>config.properties</exclude>
+                    <exclude>jdbc.properties</exclude>
+                    <exclude>log4j.properties</exclude>
+                </excludes>
             </resource>
+
+            <resource>
+                <directory>${basedir}/src/main/resources/conf/${env}</directory>
+                <includes>
+                    <include>config.properties</include>
+                    <include>jdbc.properties</include>
+                    <include>log4j.properties</include>
+                    <include>memcached.properties</include>
+                </includes>
+            </resource>
+
         </resources>
 
         <pluginManagement>

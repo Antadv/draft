@@ -27,7 +27,7 @@ import java.net.UnknownHostException;
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 /**
- * com.somelogs.elasticsearch com.somelogs.client
+ * com.somelogs.elasticsearch com.somelogs.distribution.client
  *
  * @author LBG - 2017/6/16 0008
  */
@@ -38,7 +38,7 @@ public class EsClient {
     static {
         Settings settings = Settings.settingsBuilder()
                 .put("cluster.name", "com/somelogs/elasticsearch")
-                .put("com.somelogs.client.transport.sniff", true)
+                .put("com.somelogs.distribution.client.transport.sniff", true)
                 .build();
         try {
             client = TransportClient

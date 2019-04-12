@@ -1,4 +1,4 @@
-package com.somelogs.javase.a_base_utilities;
+package com.somelogs.javase.guava.a_base_utilities;
 
 import com.google.common.collect.Ordering;
 import org.junit.Test;

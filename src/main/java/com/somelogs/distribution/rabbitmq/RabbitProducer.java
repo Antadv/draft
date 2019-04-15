@@ -35,6 +35,7 @@ public class RabbitProducer {
             // 创建一个 type = "direct"、持久化的、非自动删除的交换器
             // exchangeDeclare(String exchange, String type, boolean durable, boolean autoDelete, Map<String, Object> arguments)
             channel.exchangeDeclare(EXCHANGE_NAME, "direct", true, false, null);
+            channel.queueDeclare(QUEUE_NAME, true, false, false, null);
             // 将交换器与队列通过路由键绑定
             channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY);
 

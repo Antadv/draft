@@ -27,7 +27,8 @@ public class RabbitProducer {
         Connection connection = getConnection();
         //directExchange(connection);
         //fanoutExchange(connection);
-        topicExchange(connection);
+        //topicExchange(connection);
+        exchangeBind(connection);
     }
 
     private static Connection getConnection() {
@@ -150,6 +151,48 @@ public class RabbitProducer {
             // 发送消息的时候，需要的是 RoutingKey
             String message = "topic Hello World " + new SimpleDateFormat("mm:ss").format(new Date());
             channel.basicPublish(exchangeName, routingKey, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
+        } catch(Exception e) {
+            throw new RuntimeException("exchange error:" + e);
+        } finally {
+            try {
+                // 关闭资源
+                if (channel != null) {
+                    channel.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch(Exception e) {
+                System.out.println("close resource exception:" + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * 一般是交换器和队列绑定，还可以将交换器和交换器绑定
+     */
+    private static void exchangeBind(Connection connection) {
+        String sourceExchangeName = "source_direct_exchange_demo";
+        String destinationExchangeName = "destination_fanout_exchange_demo";
+        String queueName = "exchange_queue_demo";
+        // source 和 destination 的绑定键
+        String xxBindingKey = "x_x_binding_key_demo";
+        Channel channel = null;
+        try {
+            // 创建通道
+            channel = connection.createChannel();
+            // 创建交换器
+            channel.exchangeDeclare(sourceExchangeName, "direct", true, false, null);
+            channel.exchangeDeclare(destinationExchangeName, "fanout", true, false, null);
+            channel.exchangeBind(destinationExchangeName, sourceExchangeName, xxBindingKey);
+            // 创建队列
+            channel.queueDeclare(queueName, true, false, false, null);
+            // destination 交换器和队列绑定
+            // 因为 destination 交换器类型声明为 fanout，是忽略绑定键的，所以这里RoutingKey设为""
+            channel.queueBind(queueName, destinationExchangeName, "");
+            // 发送消息的时候，需要的是 RoutingKey
+            String message = "exchange Hello World " + new SimpleDateFormat("mm:ss").format(new Date());
+            channel.basicPublish(sourceExchangeName, xxBindingKey, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
         } catch(Exception e) {
             throw new RuntimeException("exchange error:" + e);
         } finally {

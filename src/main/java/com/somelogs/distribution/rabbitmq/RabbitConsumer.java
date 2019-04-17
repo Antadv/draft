@@ -16,6 +16,7 @@ public class RabbitConsumer {
     private static final String DIRECT_QUEUE_NAME = "queue_demo";
     private static final String FANOUT_QUEUE_NAME = "fanout_queue_demo";
     private static final String TOPIC_QUEUE_NAME = "topic_queue_demo";
+    private static final String EXCHANGE_QUEUE_NAME = "exchange_queue_demo";
     private static final String IP_ADDRESS = "127.0.0.1";
     private static final int PORT = 5672;
 
@@ -46,7 +47,7 @@ public class RabbitConsumer {
                     channel.basicAck(envelope.getDeliveryTag(), false);
                 }
             };
-            channel.basicConsume(TOPIC_QUEUE_NAME, consumer);
+            channel.basicConsume(EXCHANGE_QUEUE_NAME, consumer);
 
             // 等待回调函数执行完毕之后，关闭资源
             TimeUnit.SECONDS.sleep(5);

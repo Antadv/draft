@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author LBG - 2019/4/22
  */
-public class MessagePublish {
+public class MessageReturnListener {
 
     public static void main(String[] args) {
         mandatory();

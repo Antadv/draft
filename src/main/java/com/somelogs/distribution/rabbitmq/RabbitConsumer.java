@@ -47,7 +47,7 @@ public class RabbitConsumer {
                     channel.basicAck(envelope.getDeliveryTag(), false);
                 }
             };
-            channel.basicConsume(EXCHANGE_QUEUE_NAME, consumer);
+            channel.basicConsume(EXCHANGE_QUEUE_NAME, false, consumer);
 
             // 等待回调函数执行完毕之后，关闭资源
             TimeUnit.SECONDS.sleep(5);

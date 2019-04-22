@@ -1,4 +1,4 @@
-package com.somelogs.distribution.rabbitmq;
+package com.somelogs.distribution.rabbitmq.basic;
 
 import com.rabbitmq.client.*;
 

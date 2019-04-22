@@ -1,14 +1,13 @@
-package com.somelogs.distribution.rabbitmq;
+package com.somelogs.distribution.rabbitmq.basic;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.MessageProperties;
+import com.somelogs.distribution.rabbitmq.ConnectionUtil;
+import com.somelogs.distribution.rabbitmq.NameConstant;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Producer
@@ -17,31 +16,12 @@ import java.util.concurrent.TimeoutException;
  */
 public class RabbitProducer {
 
-    private static final String EXCHANGE_NAME = "exchange_demo";
-    private static final String ROUTING_KEY = "routing_key_demo";
-    private static final String QUEUE_NAME = "queue_demo";
-    private static final String IP_ADDRESS = "127.0.0.1";
-    private static final int PORT = 5672; // RabbitMQ default port
-
     public static void main(String[] args) {
-        Connection connection = getConnection();
+        Connection connection = ConnectionUtil.getConnection();
         //directExchange(connection);
         //fanoutExchange(connection);
         //topicExchange(connection);
         exchangeBind(connection);
-    }
-
-    private static Connection getConnection() {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(IP_ADDRESS);
-        factory.setPort(PORT);
-        factory.setUsername("guest");
-        factory.setPassword("guest");
-        try {
-            return factory.newConnection();
-        } catch (IOException | TimeoutException e) {
-            throw new RuntimeException("new connection error:" + e.getMessage());
-        }
     }
 
     /**
@@ -54,15 +34,15 @@ public class RabbitProducer {
             channel = connection.createChannel();
             // 创建一个 type = "direct"、持久化的、非自动删除的交换器
             // exchangeDeclare(String exchange, String type, boolean durable, boolean autoDelete, Map<String, Object> arguments)
-            channel.exchangeDeclare(EXCHANGE_NAME, "direct", true, false, null);
-            channel.queueDeclare(QUEUE_NAME, true, false, false, null);
+            channel.exchangeDeclare(NameConstant.EXCHANGE_NAME, "direct", true, false, null);
+            channel.queueDeclare(NameConstant.QUEUE_NAME, true, false, false, null);
             // 将交换器与队列通过路由键绑定
             // 其实这里需要的是BindingKey, 只不过这里的 BindingKey 和 RoutingKey 是同一个东西
-            channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY);
+            channel.queueBind(NameConstant.QUEUE_NAME, NameConstant.EXCHANGE_NAME, NameConstant.ROUTING_KEY);
 
             String message = "direct Hello World " + new SimpleDateFormat("mm:ss").format(new Date());
             // 发送消息的时候，需要的是 RoutingKey
-            channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
+            channel.basicPublish(NameConstant.EXCHANGE_NAME, NameConstant.ROUTING_KEY, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
         } catch(Exception e) {
             throw new RuntimeException("exchange error:" + e.getMessage());
         } finally {
@@ -100,7 +80,7 @@ public class RabbitProducer {
             // 发送消息的时候，需要的是 RoutingKey
             // 为了测试 fanout 类型交换器，RoutingKey 和 BindingKey 设成不一致
             String message = "fanout Hello World " + new SimpleDateFormat("mm:ss").format(new Date());
-            channel.basicPublish(exchangeName, ROUTING_KEY, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
+            channel.basicPublish(exchangeName, NameConstant.ROUTING_KEY, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
         } catch(Exception e) {
             throw new RuntimeException("exchange error:" + e);
         } finally {

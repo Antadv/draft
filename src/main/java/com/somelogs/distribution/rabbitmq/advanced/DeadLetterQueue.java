@@ -28,7 +28,7 @@ public class DeadLetterQueue {
         new Producer().publishMsg();
         // 等消息过期
         TimeUnit.SECONDS.sleep(10);
-        //new Consumer().consumeMsg(NORMAL_QUEUE);
+        new Consumer().consumeMsg(NORMAL_QUEUE);
         new Consumer().consumeMsg(DLX_QUEUE);
     }
 
@@ -36,17 +36,16 @@ public class DeadLetterQueue {
         public void publishMsg() {
             try(Connection connection = ConnectionUtil.getConnection()) {
                 Channel channel = connection.createChannel();
-                // 创建 DLX
+                // 创建死信交换器, 死信队列
                 channel.exchangeDeclare(DLX, BuiltinExchangeType.FANOUT.getType(), true, false, null);
                 channel.queueDeclare(DLX_QUEUE, true, false, false, null);
                 channel.queueBind(DLX_QUEUE, DLX, "");
                 // 创建 normalExchange
+                channel.exchangeDeclare(NORMAL_EXCHANGE, BuiltinExchangeType.DIRECT.getType(), true, false, null);
                 Map<String, Object> args = new HashMap<>(2);
-                // 这里统一设置队列中消息的过期时间
-                args.put("x-message-ttl", EXPIRE_TIME);
-                args.put("x-dead-letter-exchange", DLX);
-                channel.exchangeDeclare(NORMAL_EXCHANGE, BuiltinExchangeType.DIRECT.getType(), true, false, args);
-                channel.queueDeclare(NORMAL_QUEUE, true, false, false, null);
+                args.put("x-message-ttl", EXPIRE_TIME); // 设置队列消息的过期时间
+                args.put("x-dead-letter-exchange", DLX); // 为队列添加死信交换器
+                channel.queueDeclare(NORMAL_QUEUE, true, false, false, args);
                 channel.queueBind(NORMAL_QUEUE, NORMAL_EXCHANGE, ROUTING_KEY);
                 // 发送消息
                 byte[] bytes = "dlx message coming!".getBytes();

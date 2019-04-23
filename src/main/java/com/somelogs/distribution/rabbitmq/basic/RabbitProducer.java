@@ -18,10 +18,10 @@ public class RabbitProducer {
 
     public static void main(String[] args) {
         Connection connection = ConnectionUtil.getConnection();
-        //directExchange(connection);
+        directExchange(connection);
         //fanoutExchange(connection);
         //topicExchange(connection);
-        exchangeBind(connection);
+        //exchangeBind(connection);
     }
 
     /**

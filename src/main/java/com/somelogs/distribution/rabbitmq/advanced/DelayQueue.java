@@ -23,7 +23,7 @@ public class DelayQueue {
     private static final String DELAY_QUEUE_PREFIX = "delay_queue_";
     private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(2);
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         // 创建死信队列执行一次就好
         //preCreateDelayQueue();
 

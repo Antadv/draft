@@ -22,7 +22,7 @@ public class MemoryLayout {
             cccc.add(new CCCC());
             dddd.add(new DDDD());
         }
-        System.out.println("=============");
+        System.out.println("============dfd=");
         TimeUnit.MINUTES.sleep(1);
     }
 

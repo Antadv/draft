@@ -1,5 +1,7 @@
 package com.somelogs.distribution.uid;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * SnowFlake 分布式 Id 生成算法实现，参考：
  * https://www.cnblogs.com/relucent/p/4955340.html
@@ -56,6 +58,8 @@ public class SnowflakeIdWorker {
     /** 上次生成ID的时间截 */
     private long lastTimestamp = -1L;
 
+    private byte sequenceOffset;
+
     //==============================Constructors=====================================
     /**
      * 构造函数
@@ -95,10 +99,11 @@ public class SnowflakeIdWorker {
                 //阻塞到下一个毫秒,获得新的时间戳
                 timestamp = tilNextMillis(lastTimestamp);
             }
-        }
-        //时间戳改变，毫秒内序列重置
-        else {
-            sequence = 0L;
+        } else {
+            // 时间戳改变，毫秒内序列重置
+            //sequence = 0L;
+            //vibrateSequenceOffset();
+            //sequence = sequenceOffset;
         }
 
         //上次生成ID的时间截
@@ -116,7 +121,7 @@ public class SnowflakeIdWorker {
      * @param lastTimestamp 上次生成ID的时间截
      * @return 当前时间戳
      */
-    protected long tilNextMillis(long lastTimestamp) {
+    private long tilNextMillis(long lastTimestamp) {
         long timestamp = timeGen();
         while (timestamp <= lastTimestamp) {
             timestamp = timeGen();
@@ -124,21 +129,26 @@ public class SnowflakeIdWorker {
         return timestamp;
     }
 
+    private void vibrateSequenceOffset() {
+        sequenceOffset = (byte) (~sequenceOffset & 1);
+    }
+
     /**
      * 返回以毫秒为单位的当前时间
      * @return 当前时间(毫秒)
      */
-    protected long timeGen() {
+    private long timeGen() {
         return System.currentTimeMillis();
     }
 
     //==============================Test=============================================
     /** 测试 */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 50; i++) {
+            TimeUnit.SECONDS.sleep(1);
             long id = idWorker.nextId();
-            System.out.println(Long.toBinaryString(id));
+            //System.out.println(Long.toBinaryString(id));
             System.out.println(id);
         }
     }

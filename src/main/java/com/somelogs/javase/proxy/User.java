@@ -12,7 +12,7 @@ import java.util.List;
 public class User {
 
     private Integer id;
-    private String name;
+    private String name = "tom";
     private List<String> hobbyList;
     private List<User> userList;
 }

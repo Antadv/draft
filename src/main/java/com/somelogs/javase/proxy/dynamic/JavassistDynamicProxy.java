@@ -6,7 +6,7 @@ import javassist.CtMethod;
 import javassist.CtNewConstructor;
 
 /**
- * 描述
+ * javassist 动态代理
  *
  * @author LBG - 2019/3/4
  */

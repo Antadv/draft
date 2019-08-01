@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 
 /**
- * 描述
+ * Cglib 动态代理
  *
  * @author LBG - 2019/3/4
  */

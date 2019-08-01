@@ -102,8 +102,8 @@ public class SnowflakeIdWorker {
         } else {
             // 时间戳改变，毫秒内序列重置
             //sequence = 0L;
-            //vibrateSequenceOffset();
-            //sequence = sequenceOffset;
+            vibrateSequenceOffset();
+            sequence = sequenceOffset;
         }
 
         //上次生成ID的时间截
@@ -129,6 +129,10 @@ public class SnowflakeIdWorker {
         return timestamp;
     }
 
+    /**
+     * 这里是解决并发量不高的时候，id 都是偶数问题
+     * From Sharding Sphere
+     */
     private void vibrateSequenceOffset() {
         sequenceOffset = (byte) (~sequenceOffset & 1);
     }

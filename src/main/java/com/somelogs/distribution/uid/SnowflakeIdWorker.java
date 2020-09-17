@@ -1,5 +1,8 @@
 package com.somelogs.distribution.uid;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -147,13 +150,32 @@ public class SnowflakeIdWorker {
 
     //==============================Test=============================================
     /** 测试 */
-    public static void main(String[] args) throws InterruptedException {
-        SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0, 0);
-        for (int i = 0; i < 50; i++) {
-            TimeUnit.SECONDS.sleep(1);
-            long id = idWorker.nextId();
-            //System.out.println(Long.toBinaryString(id));
-            System.out.println(id);
-        }
+    public static void main(String[] args) throws Exception {
+        // 1位 - 34位时间 - 16位机器id - 13位序列
+        int unsigned = 1;
+        int seqBits = 8;
+        int workerBits = 17;
+        int timeBits = 38;
+        int workerIdShift = seqBits;
+        int timestampShift = workerBits + seqBits;
+
+        System.out.println(~(-1L << workerBits));
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date epochDate = dateFormat.parse("2019-03-20");
+        Date endDate = dateFormat.parse("2020-02-28");
+        Date nextDate = dateFormat.parse("2028-08-28");
+
+        System.out.println(epochDate.getTime());
+
+        long epochSeconds = TimeUnit.MILLISECONDS.toSeconds(epochDate.getTime());
+        long endSeconds = TimeUnit.MILLISECONDS.toSeconds(endDate.getTime());
+        long nextSeconds = TimeUnit.MILLISECONDS.toSeconds(nextDate.getTime());
+        long deltaSeconds = endSeconds - epochSeconds;
+        long nextDeltaSeconds = nextSeconds - epochSeconds;
+        long result = (deltaSeconds << timestampShift) | (556 << workerIdShift) | 1;
+        long result2 = (nextDeltaSeconds << timestampShift) | (556 << workerIdShift) | 1;
+        System.out.println(result + " " + String.valueOf(result).length());
+        System.out.println(result2 + " " + String.valueOf(result2).length());
     }
 }

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package tutorial;
+
+option java_package = "com.somelogs.distribution.proto";
+option java_outer_classname = "PersonProto";
+
+message Person {
+    string name = 1;
+    int32 id = 2;
+}

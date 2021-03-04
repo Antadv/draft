@@ -3,6 +3,7 @@ package com.somelogs.distribution.converter.mapstruct;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 描述
@@ -16,4 +17,7 @@ public class Car {
 	private int numberOfSeats;
 	private CarType type;
 	private Date createTime;
+	private Integer amount;
+	private UserEntity user;
+	private List<Wheel> wheelList;
 }

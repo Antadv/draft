@@ -9,6 +9,8 @@ import org.mapstruct.factory.Mappers;
  * 描述
  *
  * @author LBG - 1/25/21
+ *
+ *
  */
 @Mapper
 public interface CarConverter {
@@ -25,7 +27,8 @@ public interface CarConverter {
 	 */
 	@Mappings({
 			@Mapping(source = "numberOfSeats", target = "seatCount"), // 属性名不一样
-			@Mapping(source = "createTime", target = "createTime", dateFormat = "yyyy-MM-dd HH:mm:ss") // 日期格式转换
+			@Mapping(source = "createTime", target = "createTime", dateFormat = "yyyy-MM-dd HH:mm:ss"), // 日期格式转换
+			@Mapping(source = "amount", target = "amount") // 基本类型包装类型和 String 类型之间会自动转换, 所以这里没必要转换
 	})
 	CarDto carToCarDto(Car car);
 }

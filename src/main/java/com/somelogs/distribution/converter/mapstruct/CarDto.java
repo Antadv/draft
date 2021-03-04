@@ -2,6 +2,8 @@ package com.somelogs.distribution.converter.mapstruct;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 描述
  *
@@ -14,4 +16,7 @@ public class CarDto {
 	private int seatCount;
 	private String type;
 	private String createTime;
+	private String amount;
+	private UserEntity user;
+	private List<Wheel> wheelList;
 }

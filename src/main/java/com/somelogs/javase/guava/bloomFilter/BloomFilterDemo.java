@@ -12,9 +12,10 @@ import com.google.common.hash.Funnels;
  * https://www.cnblogs.com/ysocean/p/12594982.html
  * https://blog.csdn.net/helloxiaozhe/article/details/106872357
  *
- * 布隆过滤器原理: 底层用的 Bitmap (位图), Bitmap就是用n个二进制位来记录0-m之间的某个数有没有出现过。
- * 精确判断一个数不存在
- * 判断一个存在, 有一定的误判率(hash 冲突),
+ * 布隆过滤器原理:
+ * 1. 底层用的 Bitmap (位图)
+ * 2. 元素不存在, 准确
+ * 3. 元素存在, 概率误判
  *
  * 所以布隆过滤器中会有参数 k, 表示 hash(使用的是不同的 hash 函数) 的次数来降低误判率
  *

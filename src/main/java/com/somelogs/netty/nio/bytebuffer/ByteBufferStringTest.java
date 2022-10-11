@@ -1,9 +1,9 @@
-package com.somelogs.netty.nio.c1;
+package com.somelogs.netty.nio.bytebuffer;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
-import static com.somelogs.netty.nio.c1.ByteBufferPrintUtil.printPositionAndLimit;
+import static com.somelogs.netty.nio.bytebuffer.ByteBufferPrintUtil.printPositionAndLimit;
 
 /**
  * ByteBuffer 和 String 互转

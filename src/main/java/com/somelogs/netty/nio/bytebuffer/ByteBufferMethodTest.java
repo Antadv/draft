@@ -1,9 +1,9 @@
-package com.somelogs.netty.nio.c1;
+package com.somelogs.netty.nio.bytebuffer;
 
 import java.nio.ByteBuffer;
 
-import static com.somelogs.netty.nio.c1.ByteBufferPrintUtil.printPositionAndLimit;
-import static com.somelogs.netty.nio.c1.ByteBufferPrintUtil.printTitle;
+import static com.somelogs.netty.nio.bytebuffer.ByteBufferPrintUtil.printPositionAndLimit;
+import static com.somelogs.netty.nio.bytebuffer.ByteBufferPrintUtil.printTitle;
 
 /**
  * 描述

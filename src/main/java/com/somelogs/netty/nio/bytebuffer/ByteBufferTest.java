@@ -1,4 +1,4 @@
-package com.somelogs.netty.nio.c1;
+package com.somelogs.netty.nio.bytebuffer;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,7 +27,7 @@ public class ByteBufferTest {
 	 * Call buffer.clear() or buffer.compact()
 	 */
 	public static void main(String[] args) throws Exception {
-		URL resource = ByteBufferTest.class.getClassLoader().getResource("nio/ByteBufferTest.txt");
+		URL resource = ByteBufferTest.class.getClassLoader().getResource("nio/bytebuffer/ByteBufferTest.txt");
 
 		// 0. Returns the unique FileChannel object associated with this file input stream.
 		try (FileChannel channel = new FileInputStream(new File(resource.toURI())).getChannel()) {

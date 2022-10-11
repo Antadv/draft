@@ -394,6 +394,7 @@
                 <filtering>true</filtering>
                 <includes>
                     <include>*.xml</include>
+                    <include>nio/*</include>
                     <include>spring/*</include>
                     <include>mybatis/**/*</include>
                     <include>velocity/*</include>

@@ -1,7 +1,8 @@
-package com.somelogs.netty.eventloop;
+package com.somelogs.netty.future;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -17,7 +18,7 @@ import java.net.InetSocketAddress;
 public class EventLoopClient {
 
 	public static void main(String[] args) throws InterruptedException {
-		Channel channel = new Bootstrap()
+		ChannelFuture future = new Bootstrap()
 				.group(new NioEventLoopGroup())
 				.channel(NioSocketChannel.class)
 				// 添加处理器
@@ -28,14 +29,15 @@ public class EventLoopClient {
 					}
 				})
 				// 异步非阻塞，执行 connect 是 nio 线程
-				.connect(new InetSocketAddress("localhost", 8080))
-				// Waits for this future until it is done
-				.sync()
-				// Returns a channel where the I/O operation associated with this future takes place.
-				.channel();
+				.connect(new InetSocketAddress("localhost", 8080));
 
-		System.out.println(channel);
-		// 断点调试
-		System.out.println("");
+
+		// 1. Waits for this future until it is done
+		//future.sync();
+		//Channel channel = future.channel();
+		//channel.writeAndFlush("aaa");
+
+		// 2. addListener
+		future.addListener((ChannelFutureListener) future1 -> future1.channel().writeAndFlush("bbb"));
 	}
 }

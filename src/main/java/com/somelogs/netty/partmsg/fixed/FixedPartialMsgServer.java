@@ -15,6 +15,8 @@ import io.netty.handler.logging.LoggingHandler;
 /**
  * 使用 {@link FixedLengthFrameDecoder} 解决黏包、半包现象
  *
+ * 另外还有基于换行符的解码器 {@link io.netty.handler.codec.LineBasedFrameDecoder}
+ *
  * @author LBG - 2022/10/17
  */
 public class FixedPartialMsgServer {

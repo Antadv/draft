@@ -10,7 +10,7 @@ import io.netty.handler.logging.LoggingHandler;
 import java.nio.charset.StandardCharsets;
 
 /**
- * 描述
+ * LengthFieldBasedFrameDecoder 解决黏包半包，适合用来设计协议
  *
  * @author LBG - 2022/10/17
  */

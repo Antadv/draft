@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class LoginMessage extends Message {
 
+	private static final long serialVersionUID = 5240070288418571090L;
+
 	private String username;
 	private String password;
 	private String nickname;

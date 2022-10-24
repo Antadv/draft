@@ -1,4 +1,4 @@
-package com.somelogs.netty.a_first_demo.server;
+package com.somelogs.netty.hello.server;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

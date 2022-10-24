@@ -1,4 +1,4 @@
-package com.somelogs.netty;
+package com.somelogs.netty.util;
 
 import io.netty.buffer.ByteBuf;
 

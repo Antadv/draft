@@ -1,4 +1,4 @@
-package com.somelogs.netty.a_first_demo.client;
+package com.somelogs.netty.hello.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;

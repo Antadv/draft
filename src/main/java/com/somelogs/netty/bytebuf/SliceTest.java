@@ -3,7 +3,7 @@ package com.somelogs.netty.bytebuf;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 
-import static com.somelogs.netty.ByteBufLogUtil.log;
+import static com.somelogs.netty.util.ByteBufLogUtil.log;
 
 /**
  * ByteBuf 切片
